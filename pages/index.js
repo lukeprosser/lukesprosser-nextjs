@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Layout from '../components/layout';
 import Header from '../components/header';
+import Footer from '../components/footer';
 
 export default function Home() {
   return (
@@ -19,7 +20,7 @@ export default function Home() {
           </h1>
         </main>
 
-        <footer></footer>
+        <Footer />
       </Layout>
     </div>
   );
