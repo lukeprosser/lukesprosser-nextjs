@@ -1,11 +1,21 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { getSortedPostsData } from '../lib/posts';
 import Layout from '../components/layout';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import SignupForm from '../components/signupForm';
 
-export default function Home() {
+export async function getStaticProps() {
+  const allPostsData = getSortedPostsData();
+  return {
+    props: {
+      allPostsData,
+    },
+  };
+}
+
+export default function Home({ allPostsData }) {
   return (
     <div>
       <Head>
@@ -34,6 +44,20 @@ export default function Home() {
               data-account='1301826:u6l0i3y6u9'
               data-form='1755242:v5e9n4'
             ></div>
+          </section>
+          <section>
+            <h2 className='text-4xl'>Latest from the blog</h2>
+            <ul>
+              {allPostsData.map(({ id, date, title }) => (
+                <li key={id}>
+                  {title}
+                  <br />
+                  {id}
+                  <br />
+                  {date}
+                </li>
+              ))}
+            </ul>
           </section>
         </main>
         <Footer />
