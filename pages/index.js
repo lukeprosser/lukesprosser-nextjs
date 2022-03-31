@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Layout from '../components/layout';
 import Header from '../components/header';
 import Footer from '../components/footer';
+import SignupForm from '../components/signupForm';
 
 export default function Home() {
   return (
@@ -15,11 +16,26 @@ export default function Home() {
       <Layout>
         <Header />
         <main>
-          <h1>
-            Welcome to <Link href='/posts/first-post'>lukesprosser.com</Link>
-          </h1>
+          <section className='gap-3 my-12 md:flex md:items-center'>
+            <div>
+              <h1 className='py-4 text-6xl font-medium'>Hi, I&apos;m Luke.</h1>
+              <p className='mb-6 text-4xl'>
+                I&apos;m a Web Developer based in Wales, UK.
+              </p>
+              <p className='text-xl font-light'>
+                I enjoy building websites and applications using full-stack
+                JavaScript techologies like React and Node.js, and sharing what
+                I learn along the way.
+              </p>
+            </div>
+            <SignupForm />
+            <div
+              className='ml-form-embed'
+              data-account='1301826:u6l0i3y6u9'
+              data-form='1755242:v5e9n4'
+            ></div>
+          </section>
         </main>
-
         <Footer />
       </Layout>
     </div>
