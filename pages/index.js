@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getSortedPostsData } from '../lib/posts';
 import Layout from '../components/layout';
 import Header from '../components/header';
@@ -48,15 +49,27 @@ export default function Home({ allPostsData }) {
           <section>
             <h2 className='text-4xl'>Latest from the blog</h2>
             <ul>
-              {allPostsData.map(({ id, date, title }) => (
-                <li key={id}>
-                  {title}
-                  <br />
-                  {id}
-                  <br />
-                  {date}
-                </li>
-              ))}
+              {allPostsData.map(
+                ({ id, title, cover_image, image_alt, tags, excerpt }) => (
+                  <li key={id}>
+                    <Image
+                      src={`/images/posts/${cover_image}`}
+                      alt={image_alt}
+                      width={1280}
+                      height={853}
+                    />
+                    <div>
+                      <Link href={`/posts/${id}`}>
+                        <a>{title}</a>
+                      </Link>
+                      {tags.map((tag) => (
+                        <span key={tag}>{tag}</span>
+                      ))}
+                      <p>{excerpt}</p>
+                    </div>
+                  </li>
+                )
+              )}
             </ul>
           </section>
         </main>

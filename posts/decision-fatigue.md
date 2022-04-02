@@ -2,8 +2,10 @@
 title: '7 Tips For Combating Decision Fatigue'
 date: '2019-06-11'
 author: 'Luke Prosser'
-cover_image: './decision-fatigue.jpg'
+cover_image: 'decision-fatigue.jpg'
+image_alt: 'Picture of person playing chess'
 tags: ['Productivity']
+excerpt: "As mere human beings, we're heavily susceptible to decision fatigue and 'analysis paralysis'. You have a limited number of effective decisions each day. If you're too busy wasting these on what to wear or what to have for breakfast, you won't be able to give your work the level of cerebral energy that it requires. The same goes for anything else in life."
 draft: false
 ---
 
