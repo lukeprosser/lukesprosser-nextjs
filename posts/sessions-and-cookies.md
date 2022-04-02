@@ -1,0 +1,137 @@
+---
+title: 'Sessions and Cookies'
+date: '2022-01-06'
+author: 'Luke Prosser'
+cover_image: 'sessions-and-cookies.jpg'
+image_alt: 'Picture of fresh baked cookies'
+tags: ['Web']
+excerpt: 'HTTP is a protocol (a set of conventions) that govern how browsers and servers should interoperate. Often servers return what are known as ‘cookies’ that form part of the HTTP protocol.'
+draft: false
+---
+
+<a href="https://www.createdeluxe.com/blog/what-is-http" target="_blank">HTTP</a> is a protocol (a set of conventions) that govern how browsers and servers should interoperate.
+
+Often servers return what are known as ‘cookies’ that form part of the HTTP protocol.
+
+Cookies are pieces of data that are planted on a device by a server that help them remember that you’ve been there before.
+
+## Why are cookies used?
+
+Cookies provide temporary storage of text files stored _by_ the server machine _on_ the client machine. The server machine will utilise these stored files whenever the user visits a site another time.
+
+Cookies are generally used for three main reasons:
+
+- Session management
+- Personalisation
+- Tracking
+
+Session management could include things like auto-login, remembering passwords, saving shopping carts, online game scores and so on.
+
+Personalisation can be used to improve the user experience by saving customisations such as settings, preferences and UI themes.
+
+Tracking may include the recording of user behaviour and interaction, such as the products a user clicks on or the news stories they read.
+
+## How are cookies used?
+
+Unlike cache files, cookies are normally simple text files with typically hashed information (letters and numbers) that the server uses.
+
+As HTTP is a _stateless_ protocol, it can’t be used to remember information from request to request. However, cookies allow a kind of connection to be maintained _between_ requests.
+
+This can be used to, for example, remember what items a user has in their shopping cart between visits.
+
+In this case, a cookie might be created that uniquely identifies the user. Typically it’s a hash of a user ID. This cookie is stored in the user’s browser.
+
+If the website is requested the following day, the cookie is sent along with the HTTP request to the server. The server might respond with all of the unique data for that user to improve their shopping experience.
+
+Cookies can also be used to track users. For example, Facebook allows third-party companies to track visits to their websites and then re-market to you via Facebook ads directly on Facebook. More on this third-party tracking shortly.
+
+## Setting cookies with HTTP
+
+The mechanism for setting cookies is pretty simple - one of the HTTP headers that comes from server to browser is `Set-Cookie`. The `Set-Cookie` HTTP response header sends cookies from the server to the user agent.
+
+```text
+HTTP/1.1 200 OK
+Content-Type: text/html
+Set-Cookie: session=value
+...
+```
+
+As seen above, the format is a key-value pair with `{cookie-name}={cookie-value}`.
+
+The browsers are designed to send that cookie back to every subsequent page you visit on the server.
+
+If you’ve visited a particular website on a server before, your browser sends a similar header called simply `Cookie`:
+
+```text
+GET / HTTP/1.1
+Host: gmail.com
+Cookie: session=value
+...
+```
+
+The browser is constantly reminding the server that you’ve visited previously.
+
+In the real world it’s similar to getting your hand stamped when you first visit a club. Each time you return, the stamp is checked in order to get back in, rather than having to ‘log in’ again.
+
+## How long do cookies last?
+
+Along with the cookie name and value, you can also specify an expiry date or time period after which the cookie should no longer be sent.
+
+In terms of duration there are two types of cookie:
+
+- Session cookies
+- Permanent or ‘persistent’ cookies
+
+By default, all cookies are session cookies unless an expiry date is explicitly declared. Session cookies are removed when the user ends their session i.e. they close the browser, although this definition depends on the specific browser in question as behaviour can differ. If a user returns to a site after closing the browser, the website will no longer recognise them.
+
+Permanent cookies are removed on a specific date that is defined using the `Expires` attribute in the HTTP request:
+
+```text
+Set-Cookie: id=sd9f8sdf8sdf98dsf8sf; Expires=Fri, 04 Mar 2022 17:30:00 GMT;
+```
+
+These cookie files will remain in your browser’s subfolders until you either manually erase them or the browser deletes them according to the `Expires` period.
+
+The term ‘permanent’ is a little misleading in my opinion. It’s more like the expiry time is set _explicitly_ rather than allowing the cookies to expire automatically at the end of a session.
+
+## Who sets cookies?
+
+As mentioned, when a user visits a website, the website server may set their own cookies on the client browser in order to enhance the user’s experience or to track their behaviour.
+
+These cookies are known as _first-party_ cookies, where the cookies are associated with the website domain.
+
+In addition, cookies can also be set by external sources. These are introduced by way of, for example, components, libraries, images (e.g. advertising banners) etc. These types of cookies are known as _third-party_ cookies, where the associated domain is different to the website domain.
+
+It’s important to understand that third-party cookies can by used by external companies to track users and build up a profile of their behaviour and browsing history. Tracking is perhaps most widely used in marketing in order to advertise to potential customers throughout the web, including via search engines and social media.
+
+With more and more concern over user privacy, users have various tools at their disposal to block third-party tracking cookies. This can be done manually by the user within their browser settings or automatically by browsers like Firefox and Brave. It’s worth noting that this can cause third-party components to break or not work as intended by the developers.
+
+## Regulations
+
+As well as an increasing demand for privacy from users, there is also legislation in place that governs the way cookies - both first- and third-party - should be used.
+
+The most famous of these is perhaps the General Data Privacy Regulation or ‘GDPR’ in Europe, which was first launched in May 2018.
+
+Regardless of the country or continent in which these rules are set, they apply globally in that they need to be observed by any website that users can access on the World Wide Web.
+
+By now you will have seen evidence of these regulations coming into force, often via modals informing you that the website you’re visiting is using either first-party or third-party cookies, or both.
+
+The rules dictate that users should be notified of the use of cookies, enable them to opt out of receiving them, and allow them to use the majority of a website’s services without cookies. This is why you will often see a stipulation between ‘essential’ or ‘functional’ cookies and other ‘non-essential’ cookies for tracking and advertising purposes.
+
+## Why are cookies called ‘cookies’?
+
+The origin of the name ‘cookies’ is not known for certain and different sources offer different stories.
+
+Of all the explanations the most likely inspiration seems to be from the story of Hansel and Gretel, a fairytale about two children who leave a trail of breadcrumbs or ‘cookie crumbs’ through the forest in order to find their way back home.
+
+This provides a useful comparison to internet cookies, whereby servers leave cookies to track user behaviour.
+
+## Conclusion
+
+So there we have it, that’s cookies in a nutshell.
+
+In summary cookies can be used to manage user sessions, personalise their experience and track their behaviour.
+
+As HTTP is a stateless protocol, cookies help to improve user experiences by storing data based on their behaviour. An example of this is on ecommerce websites where a customer’s choices are saved for a later visit.
+
+However, with great power comes great responsibility. Cookies should only be used if necessary and should not violate privacy laws or regulations.

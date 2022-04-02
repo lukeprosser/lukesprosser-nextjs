@@ -1,0 +1,204 @@
+---
+title: 'SQL Queries: Refining SELECT'
+date: '2019-07-22'
+author: 'Luke Prosser'
+cover_image: 'refine-select.jpg'
+image_alt: 'Picture of machinery under magnifying glass'
+tags: ['SQL']
+excerpt: 'In this post, I’ll dive deeper into SQL SELECT queries to generate more targeted, refined results. These are some of the most commonly used keywords and operators you’re likely to come across when out in the field.'
+draft: false
+---
+
+In this post, I’ll dive deeper into SQL _SELECT_ queries to generate more targeted, refined results.
+
+These are some of the most commonly used keywords and operators you’re likely to come across when out in the field.
+
+## DISTINCT
+
+In many cases you may wish to return only different (i.e. _distinct_) results, free from duplicate values. For example, in a table full of customer sales, some customers may have purchased more than one item, and therefore appear multiple times.
+
+If you had a table of multiple customers such as:
+
+| customerName | saleDate   |
+| ------------ | ---------- |
+| John Smith   | 01/01/2040 |
+| Sally Evans  | 04/04/2040 |
+| Howard Moon  | 03/03/2040 |
+| Sally Evans  | 06/06/2040 |
+| John Smith   | 08/08/2040 |
+| John Smith   | 02/02/2040 |
+
+Using _DISTINCT()_, only differing values will be returned:
+
+```sql
+SELECT DISTINCT customerName FROM sales;
+
+Returns:
+John Smith
+Sally Evans
+Howard Moon
+```
+
+## ORDER BY
+
+By default, SELECT will return results in the order in which they were entered. This isn’t always desirable for obvious reasons. That’s where the _ORDER BY_ keyword comes in handy.
+
+Depending on the column data, the results will be returned in _alphanumerical_ order:
+
+```sql
+SELECT saleDate FROM sales ORDER BY saleDate;
+
+Returns:
+01/01/2040
+02/02/2040
+03/03/2040
+04/04/2040
+06/06/2040
+08/08/2040
+```
+
+The order is _ascending_ by default, but this can be adjusted by appending the query with ‘ASC’ for _ascending_ or ‘DESC’ for _descending_:
+
+```sql
+SELECT saleDate FROM sales ORDER BY saleDate DESC;
+
+Returns:
+08/08/2040
+06/06/2040
+04/04/2040
+03/03/2040
+02/02/2040
+01/01/2040
+```
+
+## LIMIT
+
+There are several reasons why you might need to limit the amount of data that you’re returning, the biggest being _performance_.
+
+If you’re working with large databases containing thousands of records or more, you can generate a heavy load on the server if you’re attempting to return too many records.
+
+This can, at best, result in a failed query attempt and, at worst, cause an entire database to crash...which your DevOps team will love you for.
+
+Adding the LIMIT clause to the end of your query will do just that - limit the number of results that are returned:
+
+```sql
+SELECT customerName FROM sales LIMIT 2;
+
+Returns:
+John Smith
+Sally Evans
+```
+
+<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">Remember, the above results are returned in the order in which they were <em>inserted</em>.</p>
+
+_LIMIT_ can be used in combination with any of the other keywords mentioned, and data can also be returned in ascending or descending order:
+
+```sql
+SELECT customerName FROM sales DESC LIMIT 2;
+
+Returns:
+Howard Moon
+Sally Evans
+```
+
+Or you could sort alphabetically in descending order:
+
+```sql
+SELECT customerName FROM sales ORDER BY customerName DESC LIMIT 2;
+
+Returns:
+Sally Evans
+Howard Moon
+```
+
+You can also limit by _range_. This comes in handy if you need to extract records in the middle of the table, rather than the start or end:
+
+```sql
+SELECT saleDate FROM sales LIMIT 2,4;
+
+Returns:
+03/03/2040
+04/04/2040
+06/06/2040
+```
+
+<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">Note that unlike the way strings are counted in SQL, LIMIT <em>does</em> count from 0 (i.e. it's zero-based). These small technicalities are fun, aren’t they?</p>
+
+## LIKE
+
+This operator is used in a _WHERE_ clause to search for specific patterns in column entries. It is most often used in combination with ‘wildcards’.
+
+Wildcards are useful in search criteria when only part of the target value is known. There are two to remember:
+
+- % - representing zero, one or multiple characters
+- \_ - representing a single character
+
+### ‘%' wildcard
+
+You can use two percent signs to search for any values that contain a character, number or group of characters/numbers in any position:
+
+```sql
+SELECT customerName FROM sales WHERE customerName LIKE ‘%o%’;
+
+Returns:
+John Smith
+Howard Moon
+```
+
+You may want to search for all customers that start with the letter ’s’, in which case you just need a % at the end:
+
+```sql
+SELECT customerName FROM sales WHERE customerName LIKE ’s%’;
+
+Returns:
+Sally Evans
+```
+
+The reverse is true for finding names that end with a specific character/number:
+
+```sql
+SELECT customerName FROM sales WHERE customerName LIKE ’%h’;
+
+Returns:
+John Smith
+```
+
+Similarly, you could search for any names that start with ‘h’ and end with ’n’:
+
+```sql
+SELECT customerName FROM sales WHERE customerName LIKE ’h%n’;
+
+Returns:
+Howard Moon
+```
+
+### ‘\_’ wildcard
+
+The underscore wildcard is useful if you need to locate characters/numbers in a value by position. Each underscore counts as one position.
+
+For example, you could search for all customers that contain ‘o’ in the second position:
+
+```sql
+SELECT customerName FROM sales WHERE customerName LIKE ’_o%’;
+
+Returns:
+John Smith
+Howard Moon
+```
+
+You could also find any values that start with ’s’ and are at least four characters long:
+
+```sql
+SELECT customerName FROM sales WHERE customerName LIKE ’s___%’;
+
+Returns:
+Sally Evans
+```
+
+## Conclusion
+
+When combined with traditional SELECT statements, the keywords and operators above are essential for digging deeper into your data and returning relevant results.
+
+Patterns like this sit behind most search tools and are a fundamental part of user interaction with your backend.
+
+Get to know them by trying them out in different combinations and feel the power of SQL!

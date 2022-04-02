@@ -26,11 +26,13 @@ export default function Home({ allPostsData }) {
         <main>
           <section className='gap-3 my-12 md:flex md:items-center'>
             <div>
-              <h1 className='py-4 text-6xl font-medium'>Hi, I&apos;m Luke.</h1>
-              <p className='mb-6 text-4xl'>
+              <h1 className='py-4 text-5xl font-medium sm:text-6xl'>
+                Hi, I&apos;m Luke.
+              </h1>
+              <p className='mb-6 text-2xl sm:text-4xl'>
                 I&apos;m a Web Developer based in Wales, UK.
               </p>
-              <p className='text-xl font-light'>
+              <p className='text-lg font-light sm:text-xl'>
                 I enjoy building websites and applications using full-stack
                 JavaScript technologies like React and Node.js, and sharing what
                 I learn along the way.
@@ -43,26 +45,37 @@ export default function Home({ allPostsData }) {
               data-form='1755242:v5e9n4'
             ></div>
           </section>
-          <section>
-            <h2 className='text-4xl'>Latest from the blog</h2>
+          <section className='mt-20'>
+            <h2 className='text-3xl sm:text-4xl'>Latest from the blog</h2>
             <ul>
               {allPostsData.map(
                 ({ id, title, cover_image, image_alt, tags, excerpt }) => (
-                  <li key={id}>
-                    <Image
-                      src={`/images/posts/${cover_image}`}
-                      alt={image_alt}
-                      width={1280}
-                      height={853}
-                    />
-                    <div>
-                      <Link href={`/posts/${id}`}>
-                        <a>{title}</a>
-                      </Link>
-                      {tags.map((tag) => (
-                        <span key={tag}>{tag}</span>
-                      ))}
-                      <p>{excerpt}</p>
+                  <li
+                    key={id}
+                    className='pb-8 my-12 border-b-2 sm:grid sm:grid-cols-3 sm:gap-6'
+                  >
+                    <div className=''>
+                      <Image
+                        src={`/images/posts/${id}/${cover_image}`}
+                        alt={image_alt}
+                        width={1280}
+                        height={853}
+                      />
+                    </div>
+                    <div className='mt-3 sm:mt-0 sm:col-span-2'>
+                      <h3 className='text-xl md:text-2xl'>
+                        <Link href={`/posts/${id}`}>
+                          <a>{title}</a>
+                        </Link>
+                      </h3>
+                      <div className='mt-2 text-xs tracking-widest text-indigo-600 dark:font-medium hover:text-indigo-500 dark:text-indigo-300 dark:hover:text-indigo-400 md:text-sm lg:text-base'>
+                        {tags.map((tag) => (
+                          <span key={tag} className='mr-5'>
+                            {tag.toUpperCase()}
+                          </span>
+                        ))}
+                      </div>
+                      <p className='mt-6 font-light md:text-lg'>{excerpt}</p>
                     </div>
                   </li>
                 )

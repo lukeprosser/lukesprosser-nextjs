@@ -1,0 +1,168 @@
+---
+title: 'What is HTTP?'
+date: '2021-11-02'
+author: 'Luke Prosser'
+cover_image: 'http.jpg'
+image_alt: 'Picture of someone using a search engine'
+tags: ['Web']
+excerpt: "Nowadays we've become so accustomed to seeing the little 'http' string in our browser address bars that we barely even notice it. What actually is HTTP anyway? What does it stand for? What does it do, and how did it even come to be? Let's find out..."
+draft: false
+---
+
+Nowadays we've become so accustomed to seeing the little 'http' string in our browser address bars that we barely even notice it.
+
+What actually _is_ HTTP anyway? What does it stand for? What does it do, and how did it even come to be? Let's find out...
+
+## A definition
+
+HTTP is an abbreviation for _Hypertext Transfer Protocol_. It is a set of rules that govern how two computers communicate with one another.
+
+It is a protocol utilised by the World Wide Web (www) to communicate between web clients and web servers by sending and receiving messages known as HTTP requests and responses.
+
+## History
+
+You may be wondering, how did HTTP come to be? While it's outside the scope of this article, in case you're curious, MDN has a detailed breakdown of <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Evolution_of_HTTP" target="_blank">the complete history of HTTP</a>, from the invention of the World Wide Web right through to the extensible protocol we know today.
+
+## How it works
+
+HTTP follows a _client-server_ model where the client (the recipient - in most cases the browser) opens a connection to make a request, then waits until it receives a response.
+
+Depending on whether or not the server holds the resource that the client has requested, it will essentially respond with a 'yes' or a 'no'.
+
+A description of the response is provided along with a [status code](#status-codes) - we'll come back to status codes later.
+
+To summarise:
+
+1. A client (a browser) sends an HTTP request to the web.
+2. A web server receives the request.
+3. The server runs an application to process the request.
+4. The server returns an HTTP response (output) to the browser.
+5. The client receives the response.
+
+The client's request and the server's response are exchanged as individual messages.
+
+## Loading a web page
+
+A typical web page is made up of multiple files, including HTML, CSS and JavaScript, as well as media such text, images and videos.
+
+When a client submits a request to a server, various parts of a document can be fetched separately (e.g. text, images, videos, scripts etc.) and then reconstructed into a complete web page.
+
+Here is a basic example of a request-response structure for a web page, step-by-step:
+
+1. The browser requests an HTML page. The server returns an HTML file.
+2. The browser requests a style sheet. The server returns a CSS file.
+3. The browser requests a JPG image. The server returns a JPG file.
+4. The browser requests JavaScript code. The server returns a JS file.
+5. The browser requests data. The server returns data (in XML or JSON format).
+
+When navigating to a web page the browser may make many individual requests depending on the content required for that page.
+
+## How is HTTP sent?
+
+The HTTP protocol is sent over a _TCP_ (Transmission Control Protocol) or TLS-encrypted (Transport Layer Security) TCP connection.
+
+Transmission Control Protocol enables two hosts to connect and exchange data packets in the same order in which they were sent.
+
+Transport Layer Security was previously called Secure Sockets Layer (SSL). It is a protocol that applications use to communicate securely across a network, preventing third parties from listening to or tampering with messages.
+
+## Status codes <a name="status-codes"></a>
+
+A server can return numerous different status codes to the client depending on the success or failure of a request, and each of these status codes is intended to provide information to the client as to the result of the request.
+
+Every status code is made up of 3 digits, and responses are grouped into 5 different classes:
+
+- **1xx** - Informational (`100`-`199`)
+- **2xx** - Success (`200`-`299`) (e.g. `200` = Success)
+- **3xx** - Redirect (`300`-`399`)
+- **4xx** - Client error (`400`-`499`) (e.g. `404` = Page Not Found)
+- **5xx** - Server error (`500`-`599`)
+
+## HTTP request structure
+
+An HTTP request message is made up of three parts that each perform a particular function:
+
+- Start-line
+- Headers (optional)
+- Body (optional)
+
+### Start-line
+
+The start-line describes the type of request that's intended to be carried out. It has the following structure:
+
+`GET /image.png HTTP/1.0`
+
+The first parameter is the [request **method**](#request-methods) e.g. `GET`, `POST`, `PUT`, `PATCH`, `DELETE` - more on these shortly.
+
+The second parameter is the **target** which is normally a URL or the file that needs to be located.
+
+The last parameter specifies the HTTP **version**, as there are multiple versions of the HTTP protocol.
+
+### Headers
+
+Headers contain additional information about a request or response. There are many different kinds of headers, including general headers that apply to the message as a whole, request headers and representation headers.
+
+In the following example we can see the `User-Agent` header that provides information about the client (browser, device) being used to make the request:
+
+`User-Agent: Mozilla/5.0`
+
+### Body
+
+The body is used to send data to a server in order to update it. For example, we may submit a 'create user' `POST` request where we need to add new user data to a database.
+
+Requests that fetch resources such as `GET` requests typically don't include a body.
+
+## HTTP response structure
+
+An HTTP response is very similar in shape to an HTTP request. It contains the following:
+
+- Status line
+- Headers
+- Body
+
+### Status line
+
+The response status line includes the HTTP version, a status code indicating the state of the response, along with a status text with more information.
+
+Here is an example of a failed response:
+
+`HTTP/1.1 404 Not Found`
+
+### Headers
+
+Response headers follow the same structure as any other header.
+
+### Body
+
+A response body will typically contain the resource that has been requested from the server.
+
+Not all HTTP responses contain a body. In many cases the status code and status text may provide all of the information required, and therefore a response payload isn't necessary.
+
+## Request methods <a name="request-methods"></a>
+
+HTTP request methods are used to indicate the type of action that should be performed for a requested resource. They are often referred to as HTTP _verbs_, and are always declared using capital letters.
+
+Here is an overview of the most commonly used methods:
+
+- `GET` - Retrieves data from the resource.
+- `POST` - Submits a data payload to the resource.
+- `PUT` - Replaces a target resource with new data.
+- `PATCH` - Updates part(s) of the resource.
+- `DELETE` - Deletes the resource.
+
+## Stateless
+
+HTTP is a _stateless_ protocol - it does not keep any data between requests as there is no link between each request.
+
+In other words, when the client sends the request and the server sends back the response, the connection between them is then broken.
+
+With HTTP, the connection is not maintained, rather it's a series of distinct interactions between client and the server.
+
+We can utilise sessions and cookies to get around this, but unfortunately that's outside the scope of this article. More on this to come!
+
+## Conclusion
+
+We use HTTP without even thinking about it, making thousands upon thousands of requests as we go about our daily lives. However, there's a lot going on under the hood!
+
+This article just scratches the surface of HTTP by providing the fundamentals to get started in web development.
+
+As you encounter different parts of HTTP or new terminology, you can always rely on good ol' Google to deepen your knowledge.

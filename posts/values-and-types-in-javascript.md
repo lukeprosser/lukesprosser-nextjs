@@ -1,0 +1,168 @@
+---
+title: 'Values And Types In JavaScript'
+date: '2019-08-26'
+author: 'Luke Prosser'
+cover_image: 'values-and-types.jpg'
+image_alt: 'Picture of phone keypad'
+tags: ['JavaScript']
+excerpt: 'Before delving into the depths of data in JavaScript, it’s important to note that all programming languages have built-in data structures. However, these data structures often vary in each language. In this post I’ll outline the properties of the built-in data structures in JavaScript.'
+draft: false
+---
+
+Before delving into the depths of data in JavaScript, it’s important to note that all programming languages have **built-in data structures**.
+
+However, these data structures often vary in each language.
+
+In this post I’ll outline the properties of the built-in data structures in JavaScript.
+
+## Data types
+
+JavaScript includes **eight data types**. Seven of these are primitive types, the eighth is the _Object_ type.
+
+Objects are a huge part of JavaScript that deserve an entirely different article.
+
+Here's a brief overview of the seven primtive types:
+
+### Number
+
+The Number type is used when you need to carry out some mathematics. It’s a double-precision 64-bit binary format IEEE 754 value, but you don’t need to worry about that for now!
+
+Examples include:
+
+```javascript
+3;
+1946;
+0.5;
+```
+
+### String
+
+When you need to work with characters, words or sentences, or print something on the screen, you’ll need to use the String type.
+
+Examples include:
+
+```javascript
+‘Mario’
+“apple"
+‘What a wonderful sentence this is.'
+```
+
+### Boolean
+
+Booleans are really helpful when you need your program to make a decision.
+
+The Boolean type has just two values: `true` and `false`.
+
+### Null
+
+The Null type has just one value: `null`.
+
+It represents a lack of identification i.e. if a variable is null, it doesn’t point to any object.
+
+### Undefined
+
+The Undefined type is used to represent a variable that has not been assigned a value.
+
+You’ll see `undefined` a lot, as JavaScript automatically assigns this value to variables that have just been declared.
+
+### Symbol
+
+Symbols are relatively new to JavaScript - they’re unique and can be used as the key of an Object property.
+
+### BigInt
+
+The BigInt type can be used when the Number type just doesn’t cut it. It’s for huge numbers. Massive numbers.
+
+Similar to how SQL uses <a href="https://www.createdeluxe.com/blog/sql-data-types-numbers" target="_blank">FLOAT and DOUBLE</a>, BigInt can be used to represent larger values at the cost of precision.
+
+<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">It’s really important to note that null and undefined are NOT the same. Null is often assigned intentionally as a representation of no value.</p>
+
+The seven primitive types define _immutable_ values known as ‘primitive values’. More on this below.
+
+## Values & Types
+
+So what’s a _value_ and what’s a _type_? It can get a little blurry and it’s pretty abstract, but it helps to know these fundamentals when building and debugging applications later down the road.
+
+Essentially, when writing a program you’ll need to express values. Depending on what you need to do with these values, you’ll need to choose different representations or _types_ for them.
+
+So, in programming lingo, _types_ simply refer to how _values_ are **represented**.
+
+## Immutablility
+
+What the heck does ‘immutable’ mean?! Don’t panic.
+
+If something is immutable, it simply means that **its state _can’t_ be changed** after it’s created. That’s it. Therefore, if something is ‘mutable’, it _can_ be changed.
+
+So _immutable_ means _unchangeable_ and _mutable_ means _changeable_. Got it?
+
+To take this further, in JavaScript, primitive values can’t be changed, but objects _can_. So primitive types are immutable and objects are mutable.
+
+Primitive types therefore represent data that it is _not_ an object and has _no_ methods.
+
+## Literals
+
+You may have heard the term ‘literal’ used in reference to values. A literal represents a fixed value in source code.
+
+In other words, if you include a value _directly in your program code_, you’re using a literal.
+
+<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">The easiest way to think about literals is that you’re <em>literally</em> writing the value in your code.</p>
+
+Let’s look at some examples.
+
+### string literal
+
+We could declare a string literal like so:
+
+```javascript
+var name = ‘Mario’;
+```
+
+String literals need to be enclosed in single (‘…’) or double (“…”) quotes. You can use either one, but choose one and stick with it throughout your program for consistency. The choice becomes more critical when you’re manipulating strings or working with JSON.
+
+### number & boolean literals
+
+`number` and `boolean` values can also be written as literals directly within the source code:
+
+```javascript
+var age = 30;
+var bool = false;
+```
+
+## typeof operator
+
+If you’re ever unsure about the type of a value, JavaScript comes with a built-in operator called _typeof_.
+
+Handily, it will return a string indicating what _type_ you’re dealing with:
+
+```javascript
+console.log(typeof ‘Mario’);
+// string
+
+console.log(typeof 30);
+// number
+
+console.log(typeof false);
+// boolean
+```
+
+## Dynamic typing
+
+At this point it’s worth mentioning that JavaScript is a _dynamic_ programming language. This is in contrast to a _static_ language. This is a detailed and nuanced topic that is beyond the scope of this article, however I'll provide a very brief introduction.
+
+JavaScript is _loosely_ typed, whereas static languages are _strictly_ typed.
+
+In other words, in JavaScript, variables aren’t tied to a specific value type - they can be whatever you want them to be. They can also change type throughout a program through re-assignment.
+
+Consider the following:
+
+```javascript
+var a = 57;      // a is a number
+    a = ‘Luigi’; // a is now a string
+    a = true;    // a is now a boolean
+```
+
+JavaScript has no problem whatsoever going along with the above. The variable `a` is first assigned as a `number`, then re-assigned as a `string`, then to a `boolean`. JavaScript simply doesn’t care.
+
+Dynamic and static typing each have their associated advantages and disadvantages. Understanding that JS is loosely typed is important in order to avoid issues and surprises later on.
+
+This can be particularly confusing when it comes to _type coercion_, which I’ll break down in another article.

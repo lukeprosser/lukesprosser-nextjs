@@ -1,0 +1,172 @@
+---
+title: 'SQL Data Types: Working With Numbers'
+date: '2019-08-07'
+author: 'Luke Prosser'
+cover_image: 'numbers.jpg'
+image_alt: 'Picture of numbers scattered around'
+tags: ['SQL']
+excerpt: "Numbers are pretty important when it comes to handling data! When building any application, it's important to understand the various numeric data types and how to implement them to get the most out of your data."
+draft: false
+---
+
+Numbers are pretty important when it comes to handling data!
+
+When building any application, it's important to understand the various numeric data types and how to implement them to get the most out of your data.
+
+## INT
+
+Integers are just whole numbers.
+
+SQL supports a number of integer types including INTEGER (also INT), SMALLINT, MEDIUMINT, BIGINT...even TINYINT.
+
+When dealing with whole numbers, the majority of the time all you'll need is INT.
+
+To create a column with an INT data type, we can use the syntax below. Let's create a column to keep track of some imaginary book stock:
+
+```sql
+CREATE TABLE books (quantity INT);
+
+INSERT INTO books(quantity) VALUES (3);
+```
+
+Let's see how that looks:
+
+```sql
+SELECT * FROM books;
+
+Returns:
+
+quantity
+----------
+3
+```
+
+It really is that simple.
+
+## DECIMAL
+
+INT covers whole numbers, but what about everything in between? That's where DECIMAL comes in. It's used to handle numbers with a decimal point. That's it.
+
+The decimal syntax looks like this:
+
+DECIMAL(M,D)
+
+Here, _M_ represents the maximum number of digits (to a limit of 65) and _D_ represents the number of digits after the decimal point (with a range of 0 to 30). You don't really need to worry about this.
+
+In the real world, a decimal insert looks like this:
+
+DECIMAL(5,2)
+
+The first number (5 in this case) stipulates the total number of digits. This includes both _before and after_ the decimal point.
+
+The second number dictates how many digits should come _after_ the decimal point.
+
+Using the above, the maximum number we can store is 999.99. This number has 5 total digits, and 2 digits after the decimal point.
+
+### In action
+
+So if, for example, you needed to store something like 'price' in a stock table of books, this would be a great option:
+
+```sql
+CREATE TABLE books (price DECIMAL(5,2));
+```
+
+Now let's add some prices to the table and take a look:
+
+```sql
+INSERT INTO books(price) VALUES (8);
+INSERT INTO books(price) VALUES (33435542);
+INSERT INTO books(price) VALUES (24.99);
+INSERT INTO books(price) VALUES (119.9999);
+INSERT INTO books(price) VALUES (3.9999);
+
+SELECT * FROM books;
+
+Returns:
+
+price
+----------
+8.00
+999.99
+24.99
+120.00
+4.00
+```
+
+There are a few points to notice:
+
+- For the first entry of '8', SQL adds 2 decimal places to make '8.00'.
+- SQL converts '33435542' to '999.99' because it exceeds the maximum number 5 digits. It therefore uses the largest possible number given the maximum total digits.
+- The fourth entry of '119.9999' gets rounded up 2 decimal places to '120.00', because the number of decimals exceeds the declared maximum of 2.
+- The same thing applies to '3.9999' - it gets rounded up to 2 decimal places.
+
+## FLOAT & DOUBLE
+
+DECIMAL is a _fixed-point_ type and calculations are _exact_. FLOAT and DOUBLE are _floating-point_ types and calculations are _approximate_.
+
+What the heck does that mean? It basically comes down to how data is stored in memory, as FLOAT and DOUBLE store data in a different way to DECIMAL. A proper explanation would involve getting into the weeds of binary which is outside the scope of this post. WAY outside.
+
+The good news is that this doesn't really matter. When using SQL, the important thing is to know how they are _functionally_ different.
+
+### Precision
+
+In short, FLOAT and DOUBLE will store larger numbers using less space. However, this comes at the cost of _precision_.
+
+Numbers won't be wildly innaccurate when using FLOAT/DOUBLE, but they won't be as accurate as when using DECIMAL. Here's a table illustrating where the problems start occurring:
+
+| Data Type | Memory Required | Precision Issues |
+| --------- | --------------- | ---------------- |
+| FLOAT     | 4 Bytes         | ~7 digits        |
+| DOUBLE    | 8 Bytes         | ~15 digits       |
+
+So, with FLOAT, numbers longer than 7 digits start to run into accuracy problems. DOUBLE takes up a larger storage capactity and starts to hit problems after 15 digits. So DOUBLE is more precise - it provides _double_ the precision in fact.
+
+In most cases this isn't much of a problem. For a number like 1000001, the final '1' may not matter so much. It depends on the specific case.
+
+What does this mean for us? Which data type should you use when you're working with data that requires a decimal?
+
+You should always try to use DECIMAL unless you know that precision doesn't matter. For financial data such as prices, accuracy matters. Therefore, in most cases, DECIMAL is the best choice.
+
+### In action
+
+To demonstrate how this precision issue can affect us, let's first create a table of 'stuff' with prices. Each price will be stored as a FLOAT.
+
+```sql
+CREATE TABLE stuff (price FLOAT);
+
+INSERT INTO stuff(price) VALUES (77.45);
+INSERT INTO stuff(price) VALUES (7788.45);
+INSERT INTO stuff(price) VALUES (7788665544.45);
+```
+
+Here's our data:
+
+```sql
+SELECT * FROM stuff;
+
+Returns:
+
+price
+-------
+77.45
+7788.45
+7788665000
+```
+
+The first two numbers are stored fine and dandy, but we run into problems with the third. As you'll remember from the table outlining the differences in precision above, FLOAT's accuracy starts to wane after 7 digits.
+
+Here, the seventh digit is rounded and the remaining numbers set to zeros. In this case, this creates a rather _big_ difference.
+
+DOUBLE will present similar issues after 15 digits.
+
+## Conclusion
+
+To recap, if you're working with whole numbers such as quantities, ages etc., you can use INT to store that data.
+
+When working with decimals, use DECIMAL if you can.
+
+If you're dealing with large numbers, use DOUBLE.
+
+Finally, if you're dealing with super large numbers and the precision resolution doesn't matter as much, use FLOAT.
+
+Phew.

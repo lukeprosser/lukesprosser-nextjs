@@ -1,0 +1,148 @@
+---
+title: 'Date Calculations In SQL'
+date: '2019-08-10'
+author: 'Luke Prosser'
+cover_image: 'date-calculations.jpg'
+image_alt: 'Picture of clocks showing times in different cities'
+tags: ['SQL']
+excerpt: 'Situations often call for us to calculate the difference between two dates. An example would be how Facebook store the date and time that a comment is made, and then display how long ago it happened in relation to the current time.'
+draft: false
+---
+
+Situations often call for us to calculate the difference between two dates.
+
+An example would be how Facebook store the date and time that a comment is made, and then display how long ago it happened in relation to the current time.
+
+For instance, say I make a comment on a friend's picture on a Monday, then view the picture again on Wednesday, there may be some additional text below the comment that says '2 days ago'.
+
+This is all achieved by comparing two dates. In this particular case, the date that the comment was made and the current date.
+
+Fortunately, SQL has some built-in functions that allow us to compare dates right out of the box.
+
+<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">It's helpful to note that almost any function in SQL that has 'DATE' in its name will also work with times.</p>
+
+## The data
+
+To demonstrate how these functions work, we'll use the 'people' data that we created in the original post on <a href="https://www.createdeluxe.com/blog/sql-data-types-dates-and-times" target="_blank">dates and times</a>:
+
+| firstname | birthdate  | birthtime | birthdatetime       |
+| --------- | ---------- | --------- | ------------------- |
+| Quentin   | 1961-10-08 | 10:06:46  | 1961-10-08 10:06:46 |
+| Erica     | 1984-06-02 | 17:23:07  | 1984-06-02 17:23:07 |
+| Rebecca   | 1976-03-24 | 06:32:27  | 1976-03-24 06:32:27 |
+
+## DATEDIFF
+
+The primary purpose of DATEDIFF() is to calculate the number of days between two dates. Let's use it to figure out how many days ago each person was born.
+
+To do this, we'll need to compare the current date, using _NOW()_, with the values in the _birthdate_ column:
+
+```sql
+SELECT firstname, birthdate, DATEDIFF(NOW(), birthdate) FROM people;
+
+Returns:
+
+firstname     birthdate     DATEDIFF(NOW(), birthdate)
+-------------------------------------------------------
+Quentin       1961-10-08    21125
+Erica         1984-06-02    12852
+Rebecca       1976-03-24    15844
+```
+
+There we have it! If you wanted to compare two dates in the past you can simply replace NOW() with a date of your choosing.
+
+## DATE_ADD
+
+DATE_ADD() forms the core of date arithmetic in SQL. It uses the following format:
+
+DATE_ADD(_date_, INTERVAL, _expr unit_)
+
+So, it takes in a date (or DATETIME), a number interval and a unit. The INTERVAL keyword simply specifies how many units are to be added.
+
+There are a whole range of units available such as MICROSECOND, SECOND, MINUTE, HOUR, DAY, WEEK and so on. For a full reference you can refer to the <a href="https://dev.mysql.com/doc/refman/8.0/en/expressions.html#temporal-intervals" target="_blank">documentation</a>.
+
+To demonstrate, let's use the _birthdatetime_ column and add one month to each person's birthday. Using DATE_ADD() we'll need to pass in the column name, as well as the interval of one month:
+
+```sql
+SELECT birthdatetime, DATE_ADD(birthdatetime, INTERVAL 1 MONTH) FROM people;
+
+Returns:
+
+birthdatetime          DATE_ADD(birthdatetime, INTERVAL 1 MONTH)
+----------------------------------------------------------------
+1961-10-08 10:06:46    1961-11-08 10:06:46
+1984-06-02 17:23:07    1984-07-02 17:23:07
+1976-03-24 06:32:27    1976-04-24 06:32:27
+```
+
+As you can see, all of the months have incremented by 1 in the second column.
+
+It's worth noting that if one of the birthdays was in December, DATE_ADD() would automatically increment the year, as well as the month. For example:
+
+```sql
+birthdatetime          DATE_ADD(birthdatetime, INTERVAL 1 MONTH)
+----------------------------------------------------------------
+2040-12-15 08:32:28    2041-01-15 08:32:28
+```
+
+<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">You can use DATE_SUB() to do the opposite i.e. subtract one date from another.</p>
+
+## +/- operators
+
+Building on what we now know, there are shortcuts for adding and subtracting dates using the '+' and '-' arithmetic operators.
+
+For example, we could achieve the same result as above without DATE_ADD() and with a shorter syntax:
+
+```sql
+SELECT birthdatetime, birthdatetime + INTERVAL 1 MONTH FROM people;
+
+Returns:
+
+birthdatetime          birthdatetime + INTERVAL 1 MONTH
+----------------------------------------------------------------
+1961-10-08 10:06:46    1961-11-08 10:06:46
+1984-06-02 17:23:07    1984-07-02 17:23:07
+1976-03-24 06:32:27    1976-04-24 06:32:27
+```
+
+We could also subtract by two months:
+
+```sql
+SELECT birthdatetime, birthdatetime - INTERVAL 1 MONTH FROM people;
+
+Returns:
+
+birthdatetime          birthdatetime - INTERVAL 1 MONTH
+----------------------------------------------------------------
+1961-10-08 10:06:46    1961-08-08 10:06:46
+1984-06-02 17:23:07    1984-04-02 17:23:07
+1976-03-24 06:32:27    1976-01-24 06:32:27
+```
+
+## Chaining units
+
+Ok, that's great. But what if we want to add multiple different units? That's where the '+' and '-' operators come in even more handy.
+
+This time, let's add 3 months and 2 hours to each birthdatetime:
+
+```sql
+SELECT birthdatetime, birthdatetime + INTERVAL 3 MONTH + 2 HOUR FROM people;
+
+Returns:
+
+birthdatetime          birthdatetime + INTERVAL 3 MONTH + 2 HOUR
+----------------------------------------------------------------
+1961-10-08 10:06:46    1962-01-08 12:06:46
+1984-06-02 17:23:07    1984-09-02 19:23:07
+1976-03-24 06:32:27    1976-06-24 08:32:27
+```
+
+The syntax really is that simple.
+
+## Conclusion
+
+When working on an application the most common date function you're likely to need is DATEDIFF() in order to work out the difference between two dates.
+
+As you can imagine, this is useful for displaying all kinds of helpful data, including event times, comments, blog posts, birthdays and so on.
+
+When you need to carry out some extra arithmetic, adding and subtracting intervals is pretty darn simple thanks to the arithmetic operators '+' and '-'.

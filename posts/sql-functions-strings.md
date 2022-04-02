@@ -1,0 +1,117 @@
+---
+title: 'SQL Functions: Working With Strings'
+date: '2019-07-21'
+author: 'Luke Prosser'
+cover_image: 'string-functions.jpg'
+image_alt: 'Picture of ball of string'
+tags: ['SQL']
+excerpt: 'String functions expand the possibilities of selecting and working with data in SQL, particularly with…well, strings. They’re particularly useful when you are met with specific requirements for returning and presenting data.'
+draft: false
+---
+
+String functions expand the possibilities of selecting and working with data in SQL, particularly with…well, strings.
+
+They’re particularly useful when you are met with specific requirements for returning and presenting data.
+
+Here is a breakdown of the most common functions:
+
+## CONCAT
+
+_CONCAT()_ allows you to _concatenate_ strings i.e. glue more than one string together into one larger string:
+
+```sql
+SELECT
+    CONCAT(firstname, ‘ ‘, lastname)
+FROM customers;
+
+Returns:
+John Smith
+```
+
+Similarly, _CONCAT_WS()_ (i.e. concatenate _with separator_) adds multiple expressions together with a separator. It takes the separator as its first argument:
+
+```sql
+SELECT
+    CONCAT_WS(‘ ‘, firstname, lastname)
+FROM customers;
+
+Returns:
+John Smith
+```
+
+## SUBSTRING
+
+_SUBSTRING()_ performs the same way it does in most other languages. It allows you to split a string into smaller ’substrings’:
+
+```sql
+SELECT SUBSTRING(‘Hello world’, 1, 5);
+
+Returns:
+Hello
+```
+
+<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">Note that in SQL, strings are counted from 1, <em>not</em> from 0, as is the case in most programming languages where counting is <em>zero-based</em>.</p>
+
+You can use the abbreviated version _SUBSTR()_ to do the same thing and achieve the same result.
+
+## REPLACE
+
+This function will replace all occurrences of a substring (within an existing string) with a new substring. That sounds more complicated than it is:
+
+```sql
+SELECT REPLACE(‘Hello world’, ‘llo’, ‘y’);
+
+Returns:
+Hey world
+```
+
+## REVERSE
+
+You probably won’t find yourself having to use this function very commonly, but it could come in handy on those rare occasions.
+
+It does what it says on the tin i.e. reverses a string and returns the result:
+
+```sql
+SELECT REVERSE(‘Hello world’);
+
+Returns:
+dlrow olleH
+```
+
+## CHAR_LENGTH
+
+_CHAR_LENGTH()_ will return the length of a string. That’s it.
+
+```sql
+SELECT firstname, CHAR_LENGTH(firstname) AS firstname_length FROM customers;
+
+Returns:
+firstname   firstname_length
+John        4
+```
+
+## UPPER
+
+_UPPER()_ converts a string to its uppercase equivalent:
+
+```sql
+SELECT UPPER(‘Hello world’);
+
+Returns:
+HELLO WORLD
+```
+
+## LOWER
+
+Same deal as the latter, but the opposite:
+
+```sql
+SELECT LOWER(‘Hello world’);
+
+Returns:
+hello world
+```
+
+## Conclusion
+
+Although seemingly simple, string functions can be combined into any number of creative combinations, aiding complex queries to present data exactly as intended.

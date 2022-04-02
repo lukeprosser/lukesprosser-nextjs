@@ -8,10 +8,6 @@ module.exports = {
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
     },
-    container: {
-      center: true,
-      padding: '2rem',
-    },
     extend: {},
   },
   plugins: [require('@tailwindcss/typography')],

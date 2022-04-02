@@ -1,0 +1,299 @@
+---
+title: 'AJAX Part 3: Loading JSON Data'
+date: '2021-08-28'
+author: 'Luke Prosser'
+cover_image: 'json.jpg'
+image_alt: 'Picture of JSON data'
+tags: ['JavaScript']
+excerpt: "In the previous article we discovered how to load text data from a local server using AJAX. In this guide, we'll take a similar approach, this time loading JSON."
+draft: false
+---
+
+In the <a href="https://www.createdeluxe.com/blog/ajax-part-2-loading-plain-text-data" target="_blank">previous article</a> we discovered how to load text data from a local server using AJAX. In this guide, we'll take a similar approach, this time loading JSON.
+
+## Loading JSON
+
+Within the same folder you created in the previous lesson, create a new file called `users.json`. We'll use this file as a local source to load the data for a set of users.
+
+Here is an example of some user data in JSON format:
+
+```json
+[
+  {
+    "id": 100,
+    "name": "Mario",
+    "email": "mario@mushroomkingdom.com"
+  },
+  {
+    "id": 101,
+    "name": "Luigi",
+    "email": "luigi@mushroomkingdom.com"
+  },
+  {
+    "id": 102,
+    "name": "Bowser",
+    "email": "koopa@bowserslair.com"
+  }
+]
+```
+
+As you can see, we have an array of users, each with a unique ID property, as well as a name and email.
+
+## HTML
+
+Once again, we need to set up an HTML file, so create a new file called something like `ajax-local-json.html`.
+
+As before we'll need a button to trigger the event that will run the AJAX code. At the same time, let's also create a place to display the data once it's been returned:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AJAX 2 - Local JSON</title>
+  </head>
+  <body>
+    <button id="button">Get users</button>
+    <br /><br />
+    <div id="users">
+      <h2>Users</h2>
+      <div id="users-data"></div>
+    </div>
+  </body>
+</html>
+```
+
+Feel free to add a title to distinguish this file from our previous work. I've labelled this page 'AJAX 2 - Local JSON'.
+
+Notice that we have a button with the text 'Get users', a `<div>` with the `id` 'users' and a `<div>` within it with the `id` 'users-data' - as you can probably guess this is where we'll output the user data!
+
+## Request logic recap
+
+Before we get into the JavaScript code, it's useful to have a quick recap of the logic that we'll need to create in order to fetch and load the JSON data.
+
+We'll need to:
+
+- Add an event listener to the button.
+- Call a function from the event listener that will handle the request logic - we'll name it `loadUsers()`.
+- Within `loadUsers()`, instantiate a new XMLHttpRequest object.
+- Specify the request type and the source (i.e. the JSON location) in the `open()` method.
+- Declare an `onload` method callback function that determines what should happen when the data is loaded.
+- Declare an `onerror` method callback function to handle any network errors.
+- Call the XMLHttpRequest's `send()` method to make the request.
+
+Last time that list probably seemed pretty confusing, but hopefully it's starting to sink in!
+
+## Adding an event listener
+
+Just like in the plain text example, we'll need an event listener that listens for the button to be clicked. Create a `<script>` tag before the closing `</body>` tag and add the following:
+
+```html
+<script>
+  document.getElementById('button').addEventListener('click', loadUsers);
+</script>
+```
+
+As you can see, we've set up a `click` event and specified a callback function called `loadUsers`. This function will hold all of the AJAX code to fetch the user data from the `users.json` file.
+
+It will look very similar to the `loadText` function we wrote in the previous article, however now we're not simply dealing with a single piece of text. This time we'll need to loop through all of the returned users.
+
+In addition, we can render a `<ul>` element for each user and list out the relevant information i.e. the user's ID, name and email address.
+
+## Stubbing out the function
+
+For now, though, let's keep things simple by declaring the function and instantiating the XMLHttpRequest object:
+
+```javascript
+function loadUsers() {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', 'users.json', true);
+}
+```
+
+Based on our logic plan we know that we'll also need a callback for the XHR object's `onload` method, an `onerror` callback to handle any network issues, and finally we'll need to invoke the XHR object's `send` method to make the request.
+
+The `onload` callback is where we'll loop through the users response, so we'll ignore that for now using a placeholder while we set the other functions in place:
+
+```javascript
+function loadUsers() {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', 'users.json', true);
+
+  xhr.onload = function () {};
+
+  xhr.onerror = function () {
+    console.error('Request error');
+  };
+
+  xhr.send();
+}
+```
+
+Hopefully this structure is starting to look familiar!
+
+## onload logic
+
+We have our code to open the request, handle any network errors and send the request. Now let's focus on handling the returned data once it's loaded. Rather than showing all of the `loadUsers` logic, I'll zoom in on the `onload` callback to help illustrate each step.
+
+First we need to check the status is `200` before we proceed any further:
+
+```javascript
+xhr.onload = function () {
+  if (this.status == 200) {
+    // Do stuff here
+  }
+};
+```
+
+Now that we have the status check in place, we need to access the JSON data. Remember that the XMLHttpRequest object returns a property called `responseText`? We can parse the JSON data from `responseText` using the built-in `JSON.parse()` method:
+
+```javascript
+xhr.onload = function () {
+  if (this.status == 200) {
+    const users = JSON.parse(this.responseText);
+  }
+};
+```
+
+Note that we store the JSON in a variable `users` so that we can use it later.
+
+This is where things get interesting. Printing the JSON data as-is would not be beneficial to the user - we need to loop through each user and build a list component to display the information clearly.
+
+To begin, we'll initialise an empty variable `userInfo`:
+
+```javascript
+xhr.onload = function () {
+  if (this.status == 200) {
+    const users = JSON.parse(this.responseText);
+    let userInfo = ``;
+  }
+};
+```
+
+Notice the use of the `let` keyword to initialise `userInfo` - with every iteration of the `for` loop we'll be appending a new `<ul>` element, so it will be changing each time.
+
+Also note that we've used backticks to declare an empty template literal - this is because we'll be rendering user properties dynamically (name, email etc.) and template literals make this a lot easier than having to concatenate strings.
+
+Next construct a `for` loop to loop through all of the users returned in the JSON response:
+
+```javascript
+xhr.onload = function () {
+  if (this.status == 200) {
+    const users = JSON.parse(this.responseText);
+    let userInfo = ``;
+
+    for (let i = 0; i < users.length; i++) {
+      // Build <ul> here
+    }
+  }
+};
+```
+
+Now we can build an unordered list element for each user and append it to the `userInfo` variable:
+
+```javascript
+xhr.onload = function () {
+  if (this.status == 200) {
+    const users = JSON.parse(this.responseText);
+    let userInfo = ``;
+
+    for (let i = 0; i < users.length; i++) {
+      userInfo += `<ul><li>ID: ${users[i].id}</li><li>Name: ${users[i].name}</li><li>Email: ${users[i].email}</li></ul>`;
+    }
+  }
+};
+```
+
+This may look a little confusing at first. Let's break it down:
+
+```javascript
+`<ul>
+	<li>ID: ${users[i].id}</li>
+	<li>Name: ${users[i].name}</li>
+	<li>Email: ${users[i].email}</li>
+</ul>`;
+```
+
+So for every user in the JSON data, we're building an unordered list element with all of the user's information and appending it to `userInfo` with `+=`.
+
+Once the `for` loop has iterated through every user, all we need to do is set the 'users-data' `<div>` innerHTML equal to the `userInfo` variable:
+
+```javascript
+xhr.onload = function () {
+  if (this.status == 200) {
+    const users = JSON.parse(this.responseText);
+    let userInfo = ``;
+
+    for (let i = 0; i < users.length; i++) {
+      userInfo += `<ul><li>ID: ${users[i].id}</li><li>Name: ${users[i].name}</li><li>Email: ${users[i].email}</li></ul>`;
+    }
+
+    document.getElementById('users-data').innerHTML = userInfo;
+  }
+};
+```
+
+## Testing the app
+
+Let's take a look at the entire application code for context:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AJAX 2 - Local JSON</title>
+  </head>
+  <body>
+    <button id="button">Get users</button>
+    <br /><br />
+    <div id="users">
+      <h2>Users</h2>
+      <div id="users-data"></div>
+    </div>
+    <script>
+      document.getElementById('button').addEventListener('click', loadUsers);
+
+      function loadUsers() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'users.json', true);
+
+        xhr.onload = function () {
+          if (this.status == 200) {
+            const users = JSON.parse(this.responseText);
+            let userInfo = ``;
+
+            for (let i = 0; i < users.length; i++) {
+              userInfo += `<ul><li>ID: ${users[i].id}</li><li>Name: ${users[i].name}</li><li>Email: ${users[i].email}</li></ul>`;
+            }
+
+            document.getElementById('users-data').innerHTML = userInfo;
+          }
+        };
+
+        xhr.onerror = function () {
+          console.error('Request error');
+        };
+
+        xhr.send();
+      }
+    </script>
+  </body>
+</html>
+```
+
+Double check that you have all of the pieces in place. Now we can test it out! Right-click on the document and select 'Open with Live Server' to spin up a local web server and open the app in the browser.
+
+Click on the 'Get users' button and you should see all of the users rendered onto the page.
+
+![Users displayed](./users-displayed.png 'Users displayed')
+
+## Next steps
+
+We've learned how we can use AJAX to load both plain text and JSON data from a local server.
+
+In <a href="https://www.createdeluxe.com/blog/ajax-part-4-loading-api-data" target="_blank">AJAX Part 4: Loading Data From An External API</a>, we'll reach out to a third-party API endpoint to load a set of users.

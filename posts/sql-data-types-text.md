@@ -1,0 +1,102 @@
+---
+title: 'SQL Date Types: Working With Text'
+date: '2019-08-07'
+author: 'Luke Prosser'
+cover_image: 'text.jpg'
+image_alt: 'Picture of typed paper in typewriter'
+tags: ['SQL']
+excerpt: "CHAR and VARCHAR provide two different ways for storing text. As you can probably guess, 'CHAR' is short for 'character'. Let's take a look at when and how to use them."
+draft: false
+---
+
+CHAR and VARCHAR provide two different ways for storing text. As you can probably guess, 'CHAR' is short for 'character'.
+
+The key differences are:
+
+- CHAR has a _fixed length_
+- VARCHAR has a _variable length_
+
+So, CHAR has a _fixed_ number of characters, VARCHAR has a _variable_ number of characters.
+
+## When to use CHAR
+
+The length of a CHAR column needs to be declared at the outset when you create a table. This length is then fixed, and can be any value from 0 to 255 characters e.g. CHAR(10).
+
+What happens if you add a value to the column with less than 10 characters? Well, when CHAR values are stored they are right-padded with spaces up to the full specificed length.
+
+So, if you enter 'dog' into a CHAR column with 10 characters, 7 padded spaces will be added to the right of 'dog' i.e. 'dog**\_\_\_**'.
+
+### Trailing spaces
+
+However, it's worth keeping in mind that when CHAR values are retrieved i.e. returned from a query, trailing spaces are removed. In the same example, you'd simply see 'dog' returned in your table.
+
+To show them, you can enable the SQL mode _PAD_CHAR_TO_FULL_LENGTH_. You don't need to use this, but it's useful to know how CHAR values are stored.
+
+You may be asking, why use CHAR instead of VARCHAR? Well you're right in that there isn't much difference. However, performance-wise, CHAR is _faster_ for fixed length text.
+
+So, when you know that you only need a fixed number of characters, it's best to use CHAR.
+
+Examples include:
+
+- Yes/No flags: Y/N
+- Sex: M/F
+- US states: CA, NY
+
+## When to use VARCHAR
+
+The simple answer is to use VARCHAR whenever you need variable character lengths. That's pretty much it. If a fixed number of characters won't suffice, use VARCHAR instead of CHAR.
+
+If you wanted to create a column for customer first names, for example, VARCHAR would be the best choice.
+
+VARCHAR takes in a maximum character count. So, for our _firstname_ column, we could declare a maximum character length of 50 with _VARCHAR(50)_.
+
+Note that unless you're working on a massive application with millions of records, you're not going to see much different (if at all).
+
+So if you're not sure, just use VARCHAR.
+
+<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">As a general rule in development, it's best to get a working app up and running and then look to optimise it later, if and when you notice performance issues.</p>
+
+## In action
+
+Let's create a table called 'dogs' with columns for name and breed.
+
+_name_ will have a fixed length, while _breed_ will be variable with a maximum length of 10 characters:
+
+```sql
+CREATE TABLE dogs (name CHAR(5), breed VARCHAR(10));
+```
+
+Now let's add some dogs:
+
+```sql
+INSERT INTO dogs (name, breed) VALUES ('max', 'beagle');
+INSERT INTO dogs (name, breed) VALUES ('james', 'spaniel');
+INSERT INTO dogs (name, breed) VALUES ('elizabeth', 'german shepherd');
+```
+
+The third entry will produce a warning because 'elizabeth' exceeds the character limit of 5.
+
+As a result, the name will be truncated to 'eliza':
+
+```sql
+SELECT * FROM dogs;
+
+Returns:
+name          breed
+-------------------------------
+max           beagle
+james         spaniel
+eliza         german she
+```
+
+Note that the breed of 'german shepherd' also became truncated.
+
+Even though the column is a VARCHAR, we set the maximum length to 10 characters. This length includes spaces.
+
+## Conclusion
+
+To store text data in databases we need to use CHAR and VARCHAR. Most of the time you'll need to use VARCHAR in order to allow for text of varying length.
+
+On some occasions, however, it's actually best to use CHAR. Again this comes down to performance, as CHAR uses less storage. It's useful when you know you'll only need a fixed character length, for data such as country codes and flags (yes/no).
+
+Remember, if in doubt, use VARCHAR.

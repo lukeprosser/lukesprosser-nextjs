@@ -1,0 +1,91 @@
+---
+title: 'What Is The Internet And How Does It Work?'
+date: '2020-05-23'
+author: 'Luke Prosser'
+cover_image: 'internet.jpg'
+image_alt: 'Picture of internet cafe'
+tags: ['HTML', 'Web']
+excerpt: 'Before taking the plunge into any HTML or web development code, it’s important to get at least a broad understanding of how websites and the Internet work. This includes the various methods of accessing websites, the technologies from which they are built and how they are distributed.'
+draft: false
+---
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/TTv55QOY4K0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+Before taking the plunge into any HTML or web development code, it’s important to get at least a broad understanding of how websites and the Internet work.
+
+This includes the various methods of accessing websites, the technologies from which they are built and how they are distributed.
+
+By the end of this lesson, you will be able to:
+
+- Define what the Internet is
+- List the components that make up the Internet
+- Explain how websites are requested and served
+
+## The Internet
+
+The web is made up of a variety of separate components that are connected with one another through a series of steps. In turn, websites are connected by links, or _hyperlinks_ as they were originally known.
+
+We can think of the Internet as a huge bunch of documents sitting on computers all over the planet, with many of these documents containing links to one another.
+
+![A network of documents](./documents.png 'A network of documents')
+
+In the early days this was exactly what the Internet consisted of, and websites have evolved over the years to feature all kinds of media and become much more sophisticated.
+
+Under the hood, however, the websites that we see are still fundamentally text documents with links.
+
+## Devices
+
+First of all, to access the Internet, we’re going to need some kind of compatible device.
+
+Back in the early days of the net the only machines that requested and displayed websites were desktop PCs, but nowadays there are a wide variety of different devices in an array of different form factors, including laptops, tablets, mobile phones and smart watches.
+
+![Browsing devices](./devices.jpg 'Browsing devices')
+
+When we’re building our websites and applications, it’s essential to keep this in mind and to ensure that they are functional on all kinds of media. This includes paying attention to responsive design, as well as speed, where certain devices may have connection limitations.
+
+## Browsers
+
+So, we’ve got a device, but if we want to visit a website or browse the Internet, guess what? We’re going to need a _browser_! Web browsers such as Chrome, Firefox, Safari, Edge, Opera and so on, are simply pieces of software that are specifically designed to render web pages to a user.
+
+Users can directly access a specific site address, search for results using a search engine or follow a link from another page. The browser will access the requested page, interpret the code behind it and render the contents onto the screen.
+
+![Chrome browser](./browser.jpg 'Chrome browser')
+
+Browsers are updated constantly to meet the growing demands of consumers, support new language functionality and to fix bugs and security issues. As a developer, it’s important to keep up-to-date with these advances, but it’s also important to cater for older browser versions as not all consumers will have access to the latest and greatest features.
+
+## Servers
+
+We know that browsers make requests for and display websites, but where are these requests going? Where does the site content actually live?
+
+When we make a request for a specific web page, our browser connects to a web _server_, which is simply a computer that’s constantly connected to the Internet, 24/7.
+
+![Servers](./servers.jpg 'Servers')
+
+This computer hosts the content and manages all of the incoming requests, _serving up_ the web pages back to the browser for the user to view.
+
+Servers come in a huge range of different forms and sizes, including self-hosted servers in homes and small businesses, as well as massive shared hosting solutions and data centres.
+
+## Connecting the dots
+
+Bringing all of these components together, we can search for, request and view our favourite websites.
+
+Devices and servers are distributed all over the world, and the connections between them are managed by ISPs (Internet Service Providers) and DNS (Domain Name Systems) servers.
+
+Every device has a unique IP (Internet Protocol) address associated with it. We can think of this like a telephone number that is specific to each device.
+
+The DNS servers maintain a directory of all of the available IP addresses and their associated devices.
+
+## Visiting a website
+
+Let’s look at a brief overview of the process:
+
+1. A user opens their browser on a device, which is connected to the Internet via a router or satellite.
+2. The device then accesses the Internet through an ISP, enabling the user to search for a specific domain or address.
+3. This request reaches a network of computers known as DNS servers.
+4. The DNS servers return an IP address for the requested domain.
+5. The user’s device contacts the website server using this unique IP address.
+6. The web server with that IP address returns the website to the browser.
+
+Phew, that’s a lot of work behind the scenes! These connections occur across a network spanning the globe, at such a rapid speed that we rarely even notice.
+
+Now that we know how websites are requested and returned, we’re ready to take a look at the technologies behind the websites themselves.

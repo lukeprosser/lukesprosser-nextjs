@@ -42,7 +42,7 @@ export default function SignupForm() {
                       aria-label='email'
                       aria-required='true'
                       type='email'
-                      className='w-full p-2 mt-4 mb-6 text-base placeholder-gray-400 rounded dark:bg-slate-100 form-control'
+                      className='w-full p-2 mt-4 mb-6 text-base placeholder-gray-400 border-2 rounded dark:bg-slate-100 form-control'
                       data-inputmask=''
                       name='fields[email]'
                       placeholder='Enter your email'
@@ -55,7 +55,7 @@ export default function SignupForm() {
               <div className='ml-form-embedSubmit'>
                 <button
                   type='submit'
-                  className='w-full p-2 font-medium text-gray-100 bg-indigo-600 rounded hover:bg-indigo-700 dark:bg-indigo-600 primary dark:hover:bg-indigo-700'
+                  className='w-full p-2 font-medium text-gray-100 bg-indigo-600 rounded hover:bg-indigo-500 dark:bg-indigo-500 primary dark:hover:bg-indigo-400'
                 >
                   Sign up
                 </button>

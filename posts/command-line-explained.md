@@ -1,0 +1,124 @@
+---
+title: 'The Command Line Explained'
+date: '2019-10-02'
+author: 'Luke Prosser'
+cover_image: 'linux-command-line.jpg'
+image_alt: 'Picture of command line interface'
+tags: ['Command Line', 'Linux', 'Terminal']
+excerpt: 'What the heck is the command line and why should you use it? In this post, I attempt to demystify the Linux command line and debunk common misconceptions.'
+draft: false
+---
+
+What the heck is the command line and why should you use it? In this post, I attempt to demystify the Linux command line and debunk common misconceptions.
+
+Many new - and experienced - developers are intimidated by the terminal. It can even feel frustrating to have to use it when we're so accustomed to graphical user interfaces.
+
+By the end of this post I hope to have demonstrated that the command line isn't as terrifying as it looks. We'll break down its origins and bust some of the seemingly confusing jargon that can often fill new developers with anxiety.
+
+Jargon be gone!
+
+## Why use the command line?
+
+There are many advantages to using command line methods over graphical interfaces, but the main benefits are **speed and control**.
+
+### Speed
+
+Once you get used to using the terminal and you gain knowledge of the basics, it is often much, _much_ faster to complete tasks using the command line than it would be using graphical methods. In fact, **many times there simply _aren't_ graphical alteratives**.
+
+Seriously, once you can carry out many of your day-to-day activities without reaching for the mouse, you'll be hooked. Tasks such as manipulating files and folders, updating and installing software, and so on, become a breeze.
+
+### Control
+
+It also provides direct access to the underlying operating system (often as the 'root' user). Many graphical applications give intentionally limited access to the underlying code so that regular users can't easily customise (or break!) core functionality.
+
+Window-based GUIs are also much less intimidating and more inviting to use, and this is the style of computing that most of us experience first.
+
+But with a little time investment upfront (and a little patience), getting to grips with the command line will skyrocket your computing power and productivity. In other words, **once you start using the command line, you won't go back**.
+
+## What _is_ the command line?
+
+A number of different terms are used interchangably to describe the command line. Is it the 'terminal'? The 'command prompt'? What about the 'shell'? What's a 'console'?
+
+Before we start getting to grips with the command line basics, let's first understand what it is with a brief history lesson.
+
+Over years of development and evolution, computing terms have become generalised and blurred as technology merges.
+
+Many devices that we think of as singular units are often comprised of multiple individual parts that have merged into one device over time with gradual technological improvements.
+
+This happens in all industries, but nowhere is it more true than in computing. Let's break down some of these terms and clarify where they come from.
+
+## Terminal
+
+The terminal is a **text-mode device** that displays characters and sends keyboard input to a computer. It's called the 'terminal' because it represents the **_end-point_ of communication** with the user.
+
+Back in the early days of computing, terminals were actual physical devices (a screen and a keyboard) that were set up externally and connected to the computer with cables.
+
+Computers were physically _huge_ back then. They were mainframes that would take up entire rooms, so terminals were a practical way for multiple users to interact with them simultaneously.
+
+If you wanted to interact with a computer, you needed to do it via a terminal.
+
+External terminal devices eventually became obsolete as computing developed, but **the functionality of terminals was retained in the form of emulation** on window GUIs.
+
+So, you can think of your terminal application as simply _emulating_ what would have been a physical terminal attached to your computer.
+
+<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">If you've ever used the terminals in any of the Fallout games, that's a pretty good way to picture it!</p>
+
+## Console
+
+Consoles go hand-in-hand with terminals. Like terminals, consoles are now emulated in software form.
+
+A console was originally both the port and the digital connection to the mainframe's operating system from a terminal. The terminal would be connected to the console port on the mainframe so that user could digitally control the mainframe.
+
+In other words, **the terminal connects to the console**, and the console is where the 'shell' is presented (we'll get to the shell in a second).
+
+### TTY
+
+You may have seen the term 'TTY' used in reference to the Linux terminal. TTY is an abbreviation of 'teletypewriter', also referred to as a 'teleprinter'.
+
+Back in the day, a teleprinter was simply an electromechanical typewriter (an electronic version of a typewriter) that was used to send and receive typed messages.
+
+They were later adapted to provide a user interface to mainframe computers in order to send typed data to the computer and print the response.
+
+On UNIX systems, the TTY _was_ the console, so **the TTY and the console are effectively the same** thing.
+
+### PTS
+
+You might also have come across 'PTS'. Failing that, you may have heard of 'SSH'. PTS devices are 'Pseudo Terminal Slaves' and are a form of TTY.
+
+However, they are an _emulated_ form of TTY in order to allow a TTY connection over a network.
+
+SSH or 'Secure Shell' is an example of a program that uses a PTS device, where we can execute commands securely over a network.
+
+## Shell
+
+A shell can be defined as a program that runs other programs. It 'wraps around' another program, which is where the name comes from. It's **a user interface that provides access to an operating system's services**.
+
+It stems from the fact that the term 'kernel' is used to refer to the core of a computer's operating system. In real life, a kernel is the inner part of a seed or nut, so a shell wraps around a kernel. See? Not as scary as it sounds.
+
+In computers, **the shell offers a command line interface** that we can interact with. There are all kinds of shells, such as BASH, CSH and ZSH.
+
+The most common shell is the BASH shell, and this is the default command line shell that we're presented with when using Linux (as well as Mac - they both utilise UNIX-based operating systems).
+
+## CLI
+
+What about 'CLI'? Well, CLI is simply an abbreviation for 'Command Line Interface'. Operating system shells use either a graphical user interface or a command line interface.
+
+As a side note, the CLI is often referred to as the 'command line _interpreter_' - this is the same thing, so you can use either term.
+
+**Each shell is programmed to accept specific hand-typed commands via the CLI** and instructs the operating system to execute them. The shell can also accept scripts and interpret the logic within them, so that the operating system can execute these too.
+
+## Command prompt
+
+The command prompt is simply the **invitation to the user to type** (it _prompts_ the user to type), displayed by the CLI (command line interface).
+
+In other words, it's the part of the CLI with the blinking cursor where we type commands. That's all we need to worry about.
+
+In UNIX the prompt ends with a '\$' (dollar sign) symbol for all users except for the root user. The root user prompt ends with a '#' (hash) symbol. In Windows you may have seen '>' instead.
+
+## Wrapping up
+
+There you have it. That wasn't so bad right? You now have a deeper understanding of the command line terminology, as well as some context around how these terms developed.
+
+I hope this post helped to chip away at any initial apprehension that you may have experienced in approaching the terminal, and that you're intrigued to delve deeper into its magic.
+
+It's definitely magical, I promise...

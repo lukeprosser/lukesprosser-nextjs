@@ -1,0 +1,391 @@
+---
+title: 'JavaScript Higher-Order Array Methods'
+date: '2020-08-31'
+author: 'Luke Prosser'
+cover_image: 'array-methods.jpg'
+image_alt: 'Picture of parked cars'
+tags: ['JavaScript']
+excerpt: 'A number of higher-order array methods were introduced into the JavaScript language with the release of ES6. These methods have helped to shape the way that we work with frameworks like React, making it much easier to manipulate data in arrays.'
+draft: false
+---
+
+A number of higher-order array methods were introduced into the JavaScript language with the release of ES6. These methods have helped to shape the way that we work with frameworks like React, making it much easier to manipulate data in arrays.
+
+As we work on various problems it’s easy to forget about some of these handy tools that can make our lives a lot easier. This post is intended to be a quick reference guide for anyone working day-to-day with modern JavaScript in order to find the right method for the job at hand.
+
+- [forEach()](#for-each)
+- [filter()](#filter)
+- [map()](#map)
+- [sort()](#sort)
+- [reduce()](#reduce)
+- [find()](#find)
+- [some()](#some)
+- [every()](#every)
+- [includes()](#includes)
+
+One of the great things to mention is that these methods can be _chained together_ to carry out any number of actions one after another.
+
+<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">While I (highly) recommend getting to grips with the theory behind these techniques and knowing <span style="font-style: italic;">why</span> something works, this serves as more of an at-a-glance guide for the times when you can’t quite remember what the darn method is called that does that awesome thing that you could really use right now. For a more detailed overview of each API, I’ve included a link to the relevant MDN doc.</p>
+
+## forEach() <a name="for-each"></a>
+
+The _forEach()_ method enables us to iterate over every item in an array and execute a provided function on every single iteration.
+
+Here’s a traditional `for` loop for comparison:
+
+```javascript
+for (let i = 0; i < companies.length; i++) {
+  console.log(companies[i]);
+}
+```
+
+Here is the _forEach()_ equivalent:
+
+```javascript
+const companies = [
+    {
+        name: ‘Apple’,
+        est: ‘1977’
+    },
+    {
+        name: ‘Facebook’,
+        est: ‘2004’
+    },
+    {
+        name: ‘Google’,
+        est: ‘1998’
+    },
+    {
+        name: ‘Microsoft’
+        est: '1975’
+    }
+];
+
+companies.forEach(function(company) {
+    console.log(company);
+});
+
+companies.forEach(function(company) {
+    console.log(company.name);
+});
+```
+
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach" target="_blank">forEach MDN documentation</a>
+
+## filter() <a name="filter"></a>
+
+The _filter()_ method filters items out from an array and returns a new array.
+
+Here’s an example with a `for` loop where we would first need to initialise an empty array:
+
+```javascript
+let canDrink = [];
+
+for (let i = 0; i < ages.length; i++) {
+  if (ages[i] >= 21) {
+    canDrink.push(ages[i]);
+  }
+}
+
+console.log(canDrink);
+```
+
+Using _filter()_ we can store the returned array directly in a variable. The following example passes in a function that features an `if` statement:
+
+```javascript
+const canDrink = ages.filter(function (age) {
+  if (age >= 21) {
+    return true;
+  }
+});
+
+console.log(canDrink);
+```
+
+We can make this more elegant by using an arrow function to produce a single line of code:
+
+```javascript
+const canDrink = ages.filter((age) => age >= 21);
+
+console.log(canDrink);
+```
+
+Here is another example where we can filter from an array of objects:
+
+```javascript
+const retailCompanies = companies.filter(function (company) {
+  if (company.category === 'Retail') {
+    return true;
+  }
+});
+
+console.log(retailCompanies);
+```
+
+Again, using an arrow function:
+
+```javascript
+const retailCompanies = companies.filter(
+  (company) => company.category === 'Retail'
+);
+
+console.log(retailCompanies);
+```
+
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" target="_blank">filter MDN documentation</a>
+
+## map() <a name="map"></a>
+
+The _map()_ method enables us to perform an action on _every_ item in an array and return a new array with the results.
+
+As with the previous methods, we can pass in an anonymous function and create a block of logic:
+
+```javascript
+const testMap = companies.map(function (company) {
+  return `${company.name} [${company.start} - ${company.end}]`;
+});
+
+console.log(testMap);
+```
+
+We can also use an arrow function:
+
+```javascript
+const testMap = companies.map(
+  (company) => `${company.name} [${company.start} - ${company.end}]`
+);
+```
+
+Here’s another example in a different scenario:
+
+```javascript
+const agesSquare = ages.map(age => Math.sqrt(age));
+const agesTimesTwo = ages.map(age => age \* 2);
+
+console.log(agesSquare);
+console.log(agesTimesTwo);
+```
+
+We can also combine multiple maps:
+
+```javascript
+const agesCalc = ages
+.map(age => Math.sqrt(age))
+.map(age => age \* 2);
+
+console.log(agesCalc);
+```
+
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map" target="_blank">map MDN documentation</a>
+
+## sort() <a name="sort"></a>
+
+The _sort()_ method allows us to compare values in an array and move them up and down in the array order depending on a condition, returning `1` (`true`) or `-1` (`false`).
+
+Initially _sort()_ can be a little tricky to understand, so we’ll start with a more traditional `if` statement to illustrate how it works.
+
+Let’s sort an array of companies by the year they began:
+
+```javascript
+const sortedCompanies = companies.sort(function (c1, c2) {
+  if (c1.start > c2.start) {
+    return 1;
+  } else {
+    return -1;
+  }
+});
+
+console.log(sortedCompanies);
+```
+
+Now let’s use an arrow function with a ternary conditional:
+
+```javascript
+const sortedCompanies = companies.sort((a, b) => (a.start > b.start ? 1 : -1));
+
+console.log(sortedCompanies);
+```
+
+In another example, we can sort ages lowest to highest:
+
+```javascript
+const sortAges = ages.sort((a, b) => a - b);
+
+console.log(sortAges);
+```
+
+To sort ages highest to lowest, we can simply flip the `a` and `b` values:
+
+```javascript
+const sortAges = ages.sort((a, b) => b - a);
+
+console.log(sortAges);
+```
+
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort" target="_blank">sort MDN documentation</a>
+
+## reduce() <a name="reduce"></a>
+
+_reduce()_ takes in a reducer function (that we can create) and applies it to _every_ element in the array, returning a single value. In other words, it can take an array of elements, process them by some condition/action, and _reduce_ them down to one value.
+
+A common example is to sum iterations of an array. Let’s take a look at the traditional approach using a `for` loop:
+
+```javascript
+let ageSum = 0;
+
+for (let i = 0; i < ages.length; i++) {
+  ageSum += ages[i];
+}
+
+console.log(ageSum);
+```
+
+With _reduce()_ we can pass in an anonymous function with the value that we want to increment (`total`) and each iteration (`age`):
+
+```javascript
+const ageSum = ages.reduce(function (total, age) {
+  return total + age;
+}, 0); // Takes a starting count (in this case 0)
+```
+
+Note that we also need to initialise a _starting_ value, which _reduce()_ takes as a second parameter.
+
+We can slim this down with an arrow function:
+
+```javascript
+const ageSum = ages.reduce((total, age) => total + age, 0);
+```
+
+Here’s a slightly more complex example where we calculate the total ranges for company lifespans:
+
+```javascript
+const totalYears = companies.reduce(function (total, company) {
+  return total + (company.end - company.start);
+}, 0);
+
+console.log(totalYears);
+```
+
+Again, with an arrow function:
+
+```javascript
+const totalYears = companies.reduce(
+  (total, company) => total + (company.end - company.start),
+  0
+);
+
+console.log(totalYears);
+```
+
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce" target="_blank">reduce MDN documentation</a>
+
+## find() <a name="find"></a>
+
+The _find()_ method will return the _first_ element that matches a provided condition. It’s important to note that it will stop iterating once it finds this first element.
+
+We can therefore search for a matching object in an array, for example:
+
+```javascript
+const items = [
+  { name: 'Bike', price: 100 },
+  { name: 'Book', price: 5 },
+  { name: 'Album', price: 10 }
+]
+
+const foundItem = items.find(item => {
+  return item.name === ‘Book';
+})
+
+console.log(foundItem);
+```
+
+This will return the very first item that it finds in the array that returns `true` for the statement that we pass inside of the _find()_ function.
+
+The arrow function equivalent would be as follows:
+
+```javascript
+const foundItem = items.find(item => item.name === ‘Book’);
+```
+
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find" target="_blank">find MDN documentation</a>
+
+## some() <a name="some"></a>
+
+_some()_ will check array elements for a condition and return `true` if any items meet that condition.
+
+```javascript
+const items = [
+  { name: 'Bike', price: 100 },
+  { name: 'TV', price: 200 },
+  { name: 'Album', price: 10 },
+  { name: 'Book', price: 5 },
+  { name: 'Phone', price: 500 },
+  { name: 'Computer', price: 1000 },
+  { name: 'Keyboard', price: 25 }
+]
+
+const hasInexpensiveItems = items.some(item => {
+  return item.price <= 100;
+}
+
+console.log(hasInexpensiveItems);
+// true
+```
+
+Again we can slim this down:
+
+```javascript
+const hasInexpensiveItem = items.some((item) => item.price <= 100);
+```
+
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some" target="_blank">some MDN documentation</a>
+
+## every() <a name="every"></a>
+
+The _every()_ method is similar to _some()_, only it will test an array for a condition and returns `true` if _all_ items meet the condition.
+
+```javascript
+const items = [
+  { name: 'Bike', price: 100 },
+  { name: 'TV', price: 200 },
+  { name: 'Album', price: 10 },
+  { name: 'Book', price: 5 },
+  { name: 'Phone', price: 500 },
+  { name: 'Computer', price: 1000 },
+  { name: 'Keyboard', price: 25 }
+]
+
+const hasInexpensiveItems = items.every(item => {
+  return item.price <= 1000;
+}
+
+console.log(hasInexpensiveItems);
+// true
+```
+
+```javascript
+const hasInexpensiveItem = items.every((item) => item.price <= 1000);
+```
+
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every" target="_blank">every MDN documentation</a>
+
+## includes() <a name="includes"></a>
+
+The _includes()_ method will determine whether or not an array includes a certain value among its entries, returning `true` or `false` as appropriate.
+
+```javascript
+const array1 = [1, 2, 3];
+
+console.log(array1.includes(2));
+// expected output: true
+
+const pets = ['cat', 'dog', 'bat'];
+
+console.log(pets.includes('cat'));
+// expected output: true
+
+console.log(pets.includes('at'));
+// expected output: false
+```
+
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes" target="_blank">includes MDN documentation</a>

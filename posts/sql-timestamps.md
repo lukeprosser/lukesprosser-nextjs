@@ -1,0 +1,185 @@
+---
+title: 'Working With TIMESTAMP In SQL'
+date: '2019-08-11'
+author: 'Luke Prosser'
+cover_image: 'timestamp.jpg'
+image_alt: 'Picture of stopwatch'
+tags: ['SQL']
+excerpt: "A 'timestamp' is simply a piece of metadata that is generated when some form of data is created to indicate when it was created. For example, when we insert a row into a table, a timestamp is generated behind the scenes to keep track of when the row was inserted."
+draft: false
+---
+
+A 'timestamp' is simply a piece of metadata that is generated when some form of data is created to indicate _when_ it was created.
+
+For example, when we insert a row into a table, a timestamp is generated behind the scenes to keep track of when the row was inserted.
+
+However, in SQL, _TIMESTAMP_ is also a data type.
+
+Like DATETIME, TIMESTAMP also stores the date and the time. So why would we use TIMESTAMP over DATETIME?
+
+## DATETIME or TIMESTAMP?
+
+Both the DATETIME and TIMESTAMP data types are used for values that contain both date and time parts. However, there is a key difference:
+
+- DATETIME has a supported time range of '1000-01-01 00:00:00' to '9999-12-31 23:59:59'.
+- TIMESTAMP has a supported time range of '1970-01-01 00:00:01' UTC to '2038-01-19 03:14:07' UTC.
+
+Wait...whaaaaaaaaaaaaat?! So DATETIME goes back to the year 1000 and TIMESTAMP only goes back to 1970?!
+
+Yep. You're not mistaken. These times seem pretty arbitrary and there are various reasons for this which are outside the scope of this post. Either way, this is what we've got to work with.
+
+<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">'UTC' is an abbreviation for 'Universal Coordinated Time', or 'Coordinated Universal Time' as it's more commonly known. It used to be known as 'GMT' or 'Greenwich Mean Time', which was established in the UK around 300 years ago. UTC is a standard for coordinating times and timezones around the world.</p>
+
+### Limitations
+
+It's important to understand these limitations when you're assessing which time format to choose for your application.
+
+For example, if you need to work with historic dates or dates of birth before 1970, you'll need to use DATETIME. In addition, if you need to work with dates that are later than 2038, you'll also need DATETIME.
+
+However, for most modern applications where we're updating details according to the current date and time (e.g. saving when something is created or most recently updated), TIMESTAMP will work just fine.
+
+## Why TIMESTAMP?
+
+You may be wondering, why does the TIMESTAMP data type even exist? Why do we need both DATETIME _and_ TIMESTAMP?
+
+The answer is, similar to other areas of SQL, that TIMESTAMP takes up less space. DATETIME takes up twice as much storage as TIMESTAMP.
+
+Therefore, from a performance perspective, using TIMESTAMP is more efficient. This makes a big difference when you're working with thousands, or even millions, of entries in a database.
+
+## In action
+
+Let's say we're running a website with a blog, and we want to keep track of all of the comments from our loyal (and not-so-loyal) readers. We'll create a table called 'comments' with two columns.
+
+The first column _comment_ will store each comment. The second column _created_at_ will store an automatically generated TIMESTAMP when the comment is created.
+
+We can do this by using the DEFAULT keyword in combination with NOW():
+
+```sql
+CREATE TABLE comments (
+  comment VARCHAR(255),
+  created_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+Now let's pretend that we've just released a new post and several comments have started coming in. We'll insert them separately so that each comment has a unique TIMESTAMP value:
+
+```sql
+INSERT INTO comments (comment) VALUES ('What an informative article! Thanks for sharing.');
+INSERT INTO comments (comment) VALUES ('I completely disagree with all of your opinions.');
+INSERT INTO comments (comment) VALUES ('Keep up the good work.');
+```
+
+Next we'll review what we've got:
+
+```sql
+SELECT * FROM comments;
+
+Returns:
+
+comment                                             created_at
+-----------------------------------------------------------------------
+What an informative article! Thanks for sharing.    2019-08-11 16:16:37
+I completely disagree with all of your opinions.    2019-08-11 16:18:23
+Keep up the good work.                              2019-08-11 16:23:08
+```
+
+As you can see, the TIMESTAMP type contains a date and a time, and these entries were generated automatically according to the value returned from NOW().
+
+We can also use the ORDER BY keyword to view the results in a different order (in this case, reverse):
+
+```sql
+SELECT * FROM comments ORDER BY created_at DESC;
+
+Returns:
+
+comment                                             created_at
+-----------------------------------------------------------------------
+Keep up the good work.                              2019-08-11 16:23:08
+I completely disagree with all of your opinions.    2019-08-11 16:18:23
+What an informative article! Thanks for sharing.    2019-08-11 16:16:37
+```
+
+## Updating a TIMESTAMP
+
+We've seen that we can generate a TIMESTAMP when an entry is first created, but what about when that entry is updated?
+
+To achieve this, we'll create the _comments_ table all over again. This time, instead of adding a column for _created_at_, we'll call it _updated_at_.
+
+We can still use the DEFAULT keyword with the NOW() function, but we'll need to use the _ON UPDATE_ keyword in addition and stipulate that the _CURRENT_TIMESTAMP_ will need to be updated.
+
+```sql
+CREATE TABLE comments (
+  comment VARCHAR(255),
+  changed_at TIMESTAMP DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+This statement is basically saying: when the row is amended, update the _changed_at_ column with the CURRENT_TIMESTAMP.
+
+<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">I've used <em>CURRENT_TIMESTAMP</em> here simply so that you're aware of it. You could also use <em>NOW()</em> to achieve exactly the same thing.</p>
+
+Once again, let's add some comments so that we've got data to work with:
+
+```sql
+INSERT INTO comments (comment) VALUES ('Outrageous!');
+INSERT INTO comments (comment) VALUES ('This is quite simply genius.');
+INSERT INTO comments (comment) VALUES ('Nice weather');
+```
+
+This gives:
+
+```sql
+SELECT * FROM comments;
+
+Returns:
+
+comment                                             changed_at
+-----------------------------------------------------------------------
+Outrageous!                                         2019-08-11 16:39:42
+This is quite simply genius.                        2019-08-11 16:40:56
+Nice weather                                        2019-08-11 16:41:22
+```
+
+Great, now let's update the first comment using an UPDATE statement:
+
+```sql
+UPDATE comments SET comment='This is a more agreeable comment.' WHERE comment='Outrageous!';
+```
+
+Now, if we select all of the entries we should see that the TIMESTAMP for the first comment (along with the comment itself) has changed:
+
+```sql
+SELECT * FROM comments;
+
+Returns:
+
+comment                                             changed_at
+-----------------------------------------------------------------------
+This is a more agreeable comment.                   2019-08-11 16:47:43
+This is quite simply genius.                        2019-08-11 16:40:56
+Nice weather                                        2019-08-11 16:41:22
+```
+
+The TIMESTAMP has indeed changed from '2019-08-11 16:39:42' to '2019-08-11 16:47:43'.
+
+Now let's order by TIMESTAMP via the _changed_at_ column:
+
+```sql
+SELECT * FROM comments ORDER BY changed_at;
+
+Returns:
+
+comment                                             changed_at
+-----------------------------------------------------------------------
+This is quite simply genius.                        2019-08-11 16:40:56
+Nice weather                                        2019-08-11 16:41:22
+This is a more agreeable comment.                   2019-08-11 16:47:43
+```
+
+We can see that the first comment is now displayed last, according to its updated TIMESTAMP. Awesome.
+
+## Conclusion
+
+So there we have it, now you know the difference between DATETIME and TIMESTAMP and the merits and drawbacks of each.
+
+Remember, for the vast majority of modern applications, we simply need to keep track of when entries have been inserted and updated. In these situations TIMESTAMP will serve your needs very well.

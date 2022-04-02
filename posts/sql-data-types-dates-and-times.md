@@ -1,0 +1,337 @@
+---
+title: 'SQL Data Types: Working With Dates & Times'
+date: '2019-08-09'
+author: 'Luke Prosser'
+cover_image: 'dates-and-times.jpg'
+image_alt: 'Picture of dates on calendar'
+tags: ['SQL']
+excerpt: "As you can probably imagine, working with dates and times is pretty important. In this guide we'll explore the various ways of handling them in SQL."
+draft: false
+---
+
+As you can probably imagine, working with dates and times is pretty important. There are three main data types to be aware of:
+
+- DATE()
+- TIME()
+- DATETIME()
+
+Let's explore the differences between them.
+
+## DATE
+
+DATE is used to store values with only a date and no time. It's stored in the following format:
+
+'YYYY-MM-DD' e.g. '2040-01-15'
+
+Date of birth is a good example of when this data type would be the best choice.
+
+## TIME
+
+Similary, TIME is used to store time, and no date. Here's the format:
+
+'HH:MM:SS' e.g. '14:56:23'
+
+You won't be using this very often, if at all. It's just pretty unlikely that you're going to need to store a time without reference to a date.
+
+## DATETIME
+
+The most common data type for working with dates and times is, by far, DATETIME. As you can probably guess, it stores values with both a date and a time. The format is a mashup of both DATE and TIME:
+
+'YYYY-MM-DD HH:MM:SS' e.g. '2040-01-15 14:56:23'
+
+Very often we'll need to store a reference to the time and date that a row of data was created in a database.
+
+For example, Facebook will use this to record the date and time that a comment was made. Twitter will store the dates and times of tweets.
+
+These comments and tweets need to be displayed in the _order_ in which they were created. Having reference to the DATETIME that these rows were created will enable that.
+
+## Comparing DATE, TIME & DATETIME
+
+Let's look at all of these in action to demonstrate the differences. We'll create a table of people with their birth DATE, TIME and DATETIME. Pretty ridiculous, yes, but it will allow us to compare and contrast.
+
+```sql
+CREATE TABLE people (
+  name VARCHAR(100),
+  birthdate DATE,
+  birthtime TIME,
+  birthdatetime DATETIME
+);
+
+INSERT INTO people (firstname, birthdate, birthtime, birthdatetime) VALUES
+  ('Quentin', '1961-10-08', '10:06:46', '1961-10-08 10:06:46'),
+  ('Erica', '1984-06-02', '17:23:07', '1984-06-02 17:23:07'),
+  ('Rebecca', '1976-03-24', '06:32:27', '1976-03-24 06:32:27');
+```
+
+Let's check out the data:
+
+```sql
+SELECT * FROM people;
+
+Returns:
+
+firstname   birthdate     birthtime     birthdatetime
+------------------------------------------------------------
+Quentin     1961-10-08    10:06:46      1961-10-08 10:06:46
+Erica       1984-06-02    17:23:07      1984-06-02 17:23:07
+Rebecca     1976-03-24    06:32:27      1976-03-24 06:32:27
+```
+
+## CURDATE, CURTIME & NOW
+
+All three of these data types automatically get the _current_ date/time when inserted. You can probably guess which one is which:
+
+- CURDATE() will automatically insert the current date. It uses the same format as DATE i.e. 'YYYY-MM-DD'.
+- CURTIME() will automatically insert the current time. It uses the same format as TIME i.e. 'HH:MM:SS'.
+- NOW() will automatically insert the current date. It uses the same format as DATETIME i.e. 'YYYY-MM-DD HH:MM:SS'.
+
+To prove this, you can run the following SELECT statements to test the output and compare:
+
+```sql
+SELECT CURDATE();
+SELECT CURTIME();
+SELECT NOW();
+```
+
+### In action
+
+For the purposes of this demo, let's pretend that the current date and time is as follows:
+
+'2040-01-15 14:56:23'
+
+Let's add some more entries to our 'people' table to demonstrate.
+
+```sql
+INSERT INTO people (firstname, birthdate, birthtime, birthdatetime) VALUES
+  ('Philip', CURDATE(), CURTIME(), NOW());
+```
+
+Notice how the entry appears:
+
+```sql
+SELECT * FROM people;
+
+Returns:
+
+firstname   birthdate     birthtime     birthdatetime
+------------------------------------------------------------
+Quentin     1961-10-08    10:06:46      1961-10-08 10:06:46
+Erica       1984-06-02    17:23:07      1984-06-02 17:23:07
+Rebecca     1976-03-24    06:32:27      1976-03-24 06:32:27
+Philip      2040-01-15    14:56:23      2040-01-15 14:56:23
+```
+
+It's exactly the same format as the previous inserts.
+
+As the DATETIME format is the most useful in the majority of situations, similarly _NOW()_ is the most common way that you would insert the current date and time. Plus it's pleasantly simple to remember, so go with NOW() if you need the current date and time.
+
+## Formatting dates
+
+SQL provides a huge variety of ways to view and format dates. Using our people data, let's demonstrate the possibilities by looking at how we can pull various day information from DATE.
+
+There are a number of tools that can help us to achieve this, depending on what we need to display.
+
+Using our existing entries for DATE within the 'birthdate' column, we can extract the day of the month as a number using DAY():
+
+```sql
+SELECT firstname, birthdate, DAY(birthdate) FROM people;
+
+Returns:
+
+firstname     birthdate     DAY(birthdate)
+-------------------------------------------
+Quentin       1961-10-08    8
+Erica         1984-06-02    2
+Rebecca       1976-03-24    24
+```
+
+We could also use DAYNAME() to extract the name of the day:
+
+```sql
+SELECT firstname, birthdate, DAYNAME(birthdate) FROM people;
+
+Returns:
+
+firstname     birthdate     DAYNAME(birthdate)
+-------------------------------------------
+Quentin       1961-10-08    Sunday
+Erica         1984-06-02    Saturday
+Rebecca       1976-03-24    Wednesday
+```
+
+In addition, we can get the day of the week as a number using DAYOFWEEK():
+
+```sql
+SELECT firstname, birthdate, DAYOFWEEK(birthdate) FROM people;
+
+Returns:
+
+firstname     birthdate     DAYOFWEEK(birthdate)
+-------------------------------------------
+Quentin       1961-10-08    1
+Erica         1984-06-02    7
+Rebecca       1976-03-24    4
+```
+
+<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">If you're used to the way JavaScript indexes days of the week (i.e. starting from Sunday at 0, Monday at 1 and so on), DAYOFWEEK() is a little different in that it counts from 1. So Sunday is 1, Monday is 2 etc.</p>
+
+Finally, we can use DAYOFYEAR to view the number of the day in relation to an entire year:
+
+```sql
+SELECT firstname, birthdate, DAYOFYEAR(birthdate) FROM people;
+
+Returns:
+
+firstname     birthdate     DAYOFYEAR(birthdate)
+-------------------------------------------
+Quentin       1961-10-08    281
+Erica         1984-06-02    154
+Rebecca       1976-03-24    84
+```
+
+Note that this _does_ take leap years into account.
+
+### Extracting from DATETIME
+
+Building on the above, let's use our DATETIME data so that we can get information on either the date or the time.
+
+All of the functions demonstrated above will also work for entries with DATETIME. For example:
+
+```sql
+SELECT firstname, birthdatetime, DAYOFYEAR(birthdatetime) FROM people;
+
+Returns:
+
+firstname     birthdatetime          DAYOFYEAR(birthdatetime)
+-------------------------------------------------------------
+Quentin       1961-10-08 10:06:46    281
+Erica         1984-06-02 17:23:07    154
+Rebecca       1976-03-24 06:32:27    84
+```
+
+The results are exactly the same. Using DATETIME data we can also get things like month using (you guessed it) MONTH():
+
+```sql
+SELECT firstname, birthdatetime, MONTH(birthdatetime) FROM people;
+
+Returns:
+
+firstname     birthdatetime          MONTH(birthdatetime)
+-------------------------------------------------------------
+Quentin       1961-10-08 10:06:46    10
+Erica         1984-06-02 17:23:07    06
+Rebecca       1976-03-24 06:32:27    03
+```
+
+As with DAYNAME(), we can also get the MONTHNAME():
+
+```sql
+SELECT firstname, birthdatetime, MONTHNAME(birthdatetime) FROM people;
+
+Returns:
+
+firstname     birthdatetime          MONTHNAME(birthdatetime)
+-------------------------------------------------------------
+Quentin       1961-10-08 10:06:46    October
+Erica         1984-06-02 17:23:07    June
+Rebecca       1976-03-24 06:32:27    March
+```
+
+Hopefully you're beginning to see how useful DATETIME() (and similarly, NOW()) data can be.
+
+## DATE_FORMAT
+
+You may be thinking, what if we want to combine all of this data to create prettier or more practical date formats? For example, what if we want to generate something like the following:
+
+June 2nd 1984
+
+We could use CONCAT() to generate a string, but this is pretty darn impractical in everyday use. Fortunately, SQL provides a wide array of formats using the DATE_FORMAT() function.
+
+DATE_FORMAT() outputs a string that we can use to represent any date, time or combination of the two.
+
+### Specifiers
+
+It includes a whole range of built-in 'specifiers' that we can use to _specifiy_ how we'd like the date/time to be displayed.
+
+They can seem a little strange at first, but you'll pick up the patterns pretty quickly once you start to use them.
+
+For example, we can use uppercase '%M' to extract the month _name_ from a date e.g. January, February etc.
+
+We can also use lowercase '%m' to extract the month _number_ e.g. 1, 2, 3 and so on.
+
+For weekday name (Sunday, Monday, Tuesday etc.) there is '%W', and for weekday number there is '%w' (0, 1, 2).
+
+<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">Earlier we discussed the fact that DAYOFWEEK() produces the number of the day starting from 1. Bizarrely, DATE_FORMAT() counts days from 0. I know, crazy. Something to keep in mind!</p>
+
+For a full breadown of the available specifiers, <a href="https://www.w3schools.com/sql/func_mysql_date_format.asp" target="_blank">click here</a>.
+
+### In action
+
+Let's convert the DATETIME entry '1984-06-02 17:23:07' to the string 'Saturday June 1984':
+
+```sql
+SELECT DATE_FORMAT('1984-06-02 17:23:07', '%W %M %Y');
+
+Returns:
+Saturday June 1984
+```
+
+Pretty simple, right? We're free to format this however we'd like. Let's add some hyphens:
+
+```sql
+SELECT DATE_FORMAT('1984-06-02 17:23:07', '%W-%M-%Y');
+
+Returns:
+Saturday-June-1984
+```
+
+We could even add additional words to the string:
+
+```sql
+SELECT DATE_FORMAT('1984-06-02 17:23:07', 'The date is: %W %M %Y');
+
+Returns:
+The date is: Saturday June 1984
+```
+
+### Manipulating data with DATE_FORMAT()
+
+Going back to the people table and our 'birthdatetime' column, let's look at the various ways we could display this data.
+
+What if we'd like to display the date in the UK format 'dd/mm/yyyy'?
+
+Looking at the specifiers, we'd need to use the following:
+
+- '%d' for 2-digit day
+- '%m' for 2-digit month
+- '%Y' for 4-digit year
+
+```sql
+SELECT DATE_FORMAT(birthdatetime, '%d/%m/%Y') FROM people;
+
+Returns:
+
+DATE_FORMAT(birthdatetime, '%d/%m/%Y')
+--------------------------------------
+08/10/1961
+02/06/1984
+24/03/1976
+```
+
+We could even add the time:
+
+```sql
+SELECT DATE_FORMAT(birthdatetime, '%d/%m/%Y at %h:%m') FROM people;
+
+Returns:
+
+DATE_FORMAT(birthdatetime, '%d/%m/%Y at %h:%m')
+-----------------------------------------------
+08/10/1961 at 10:06
+02/06/1984 at 17:23
+24/03/1976 at 06:32
+```
+
+## Conclusion
+
+There are a whole bunch of separate functions for working with time. But, as DATE_FORMAT() handles both date and time, you can use it for everything with the exception of some rare edge cases.

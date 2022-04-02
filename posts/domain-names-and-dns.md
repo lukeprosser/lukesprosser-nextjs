@@ -1,0 +1,258 @@
+---
+title: 'Domain Names and DNS'
+date: '2022-01-10'
+author: 'Luke Prosser'
+cover_image: 'domain-names-and-dns.jpg'
+image_alt: 'Picture of networks on earth from space'
+tags: ['Web']
+excerpt: 'Once you have a broad understanding of how the internet works, as well as the fundamentals of HTTP, it’s time to take a deeper dive under the hood.'
+draft: false
+---
+
+Once you have a broad understanding of <a href="https://www.createdeluxe.com/blog/what-is-the-internet" target="_blank">how the internet works</a>, as well as the fundamentals of <a href="https://www.createdeluxe.com/blog/what-is-http" target="_blank">HTTP</a>, it’s time to take a deeper dive under the hood.
+
+When you search for a particular website, there is a lot of infrastructure behind the scenes that enables this request to happen. In this article we’ll explore these technologies and related topics, including:
+
+- [IP addresses](#ip-addresses)
+- [Domain names](#domain-names)
+- [DNS](#dns)
+- [Network location](#network-location)
+- [Purchasing domain names](#purchasing-domain-names)
+- [WHOIS](#whois)
+
+...and more.
+
+## IP addresses <a name="ip-addresses"></a>
+
+How does the router know which server holds the files that you need for the exact URL that you’re requesting? This is achieved using an IP address or _Internet Protocol Address_. Each IP address on a system connected to a network must be unique.
+
+Every computer is assigned an individual IP address which is a sequence of numbers, and that sequence must be unique per network.
+
+There are two different versions of the protocol. One version uses digits (referred to as IPv4 or ‘Internet Protocol Version 4’) and the other version, IPv6, uses hexadecimal.
+
+### IPv4
+
+IPv4 addresses are the current technology that most of the internet runs on. They are 32-bit addresses meaning that there are 4.2 billion (4,294,967,295 to be exact) possible combinations of addresses.
+
+IPv4 addresses are made up of a maximum of 3-digit sequences separated by a `.` e.g. ‘123.45.67.890’.
+
+Despite the fact that there are over 4 billion possible combinations of these digits, this simply isn’t enough and we’re already at the point where we’ve run out. As every individual device, including your laptop, desktop, phone, router, printer etc. requires a unique IP, you can see how this would add up over time.
+
+### IPv6
+
+To solve this problem a new technology was introduced called _IPv6_.
+
+This uses 128-bit numbers which increases the total possible combinations to 7.9x10^28, thus providing trillions and trillions of potential addresses.
+
+They are made up of 8 groups of digits and each individual group is written as 4 hexadecimal digits, separated by a `:` e.g. ‘2001:0db8:0000:0000:0000:ff00:0042:8329’.
+
+New devices typically support both IPv4 and IPv6 as it will take time for the world’s infrastructure to upgrade.
+
+## Domain names <a name="domain-names"></a>
+
+You may have noticed that IP addresses aren’t very easy to memorise! Just like with phone numbers, once you reach a certain amount of family, friends, colleagues etc. in your phonebook it becomes impossible to remember everyone’s individual numbers.
+
+To solve this problem we store a person’s number in our contacts list under their name, which is much easier to recall.
+
+On the internet, domain names were created to solve this same problem with IP addresses. Domain names are made up of human readable characters and each name is linked to an IP address under the hood - more on this shortly.
+
+Each domain name consists of several parts, and all domains end with what’s known as a _Top Level Domain_, of which there are three different types:
+
+- **TLD** - TLD, short for Top Level Domain, is the original version. Some of the most common examples include ‘.com’, ‘.net’, ‘.org’, ‘.biz’ etc.
+- **CCTLD** - CCTLD or _Country Code Top Level Domain_ assigns a unique code to every country in the world. Examples include ‘.uk’ for the United Kingdom, ‘.mx’ for Mexico, ‘.cn’ for China.
+- **GTLD** - GTLD stands for _Generic Top Level Domain_ and is the most recent domain protocol. It offers even more variety for domain combinations such as ‘.design’, ‘.club’, ‘.dev’ etc.
+
+## DNS <a name="dns"></a>
+
+DNS is short for _Domain Name Server_. Domain Name Servers are used to map human readable domain names to their respective IP addresses.
+
+They’re essentially giant tables that link each name with each address, for example:
+
+| Domain Name    | IP Address      |
+| -------------- | --------------- |
+| www.google.com | 142.250.191.196 |
+| www.apple.com  | 184.84.218.234  |
+| www.amazon.com | 176.32.103.205  |
+
+## DNS and HTTP
+
+So Domain Name Servers are a mapping service for domain names to IP addresses, but how does this work within the HTTP request cycle?
+
+The DNS server acts as an intermediary between the user client and the website server.
+
+1. When a user searches for a website domain from their browser, the browser submits an HTTP request to the router.
+2. The router then reaches out to the DNS to find the correct IP address for the requested domain.
+3. The DNS responds with the IP and sends this back to the router.
+4. The router then sends a request with the website IP address to the correct web server.
+5. The web server responds with the website data located at the IP address.
+
+![DNS and HTTP](./dns-server-and-http.png 'DNS and HTTP')
+
+<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">Sometimes routers actually store their own reference of the IP addresses for commonly-requested domain names in order to speed up this process.</p>
+
+## Network location <a name="network-location"></a>
+
+There’s a bit more to unpack in the last two steps above. Once the router has the IP address, how does it find the correct server? The answer is network location.
+
+IP addresses use what’s known as _hierarchical addressing_, where each group of digits in an address corresponds to a specific network location.
+
+A useful analogy for this is US phone numbers. A phone number can be broken down into several parts:
+
+| Country Code | Area Code | Local Exchange | Specific Phone |
+| ------------ | --------- | -------------- | -------------- |
+| +1           | 234       | 567            | 2010           |
+
+The first number is the country code, followed by the area code, which further restricts geography of the number to a county or a state. Next comes the local exchange followed by the actual device or address where the phone resides.
+
+The further you go down the chain the narrower the physical location becomes.
+
+The IP address format is very similar:
+
+| University | Campus Building | Lab Computer |
+| ---------- | --------------- | ------------ |
+| 123.45     | 678             | 90           |
+
+The first part of the address corresponds to the networking entity, such as a college or university. The second group of numbers may represent a physical building, and the last part may refer to a specific room or computer that has the IP address.
+
+This is how specific devices can be located on a network, and the router’s role is to send traffic to this precise location.
+
+## Sending and receiving
+
+Depending on the locations of the client and the server, it’s important to understand that the request doesn’t necessarily travel directly from the client to the server.
+
+When an IP address is requested, the request bounces geographically from router to router until it reaches its intended destination. The server then responds with the requested data.
+
+![Network location](./network-location.png 'Network location')
+
+To use another analogy, a request is sent in a similar way to a physical letter.
+
+When sending a letter you may provide a ‘from’ or ‘return’ address, as well as a destination address. The letter can then be posted and the postal service will handle the delivery.
+
+If, for some reason, there is an issue in sending the letter, the postal service can return the letter to the sender via the from address.
+
+This is a very similar process to network location, whereby every HTTP request includes a sender IP address and a destination IP address.
+
+When the server returns a request, the request doesn’t necessarily follow the same path from router to router back to the client (in fact it this is pretty unlikely). It will take the most efficient path available at that time.
+
+## Pinging domains
+
+We can actually try this process out using the `ping` command to make HTTP requests to a domain and view the corresponding IP address.
+
+In your terminal, you can make a request to a website domain like so:
+
+```bash
+ping google.com
+```
+
+`ping` will then continually make a GET request to the domain at regular intervals:
+
+```bash
+PING google.com (142.250.187.206): 56 data bytes
+64 bytes from 142.250.187.206: icmp_seq=0 ttl=117 time=8.811 ms
+64 bytes from 142.250.187.206: icmp_seq=1 ttl=117 time=8.385 ms
+64 bytes from 142.250.187.206: icmp_seq=2 ttl=117 time=9.412 ms
+64 bytes from 142.250.187.206: icmp_seq=3 ttl=117 time=8.778 ms
+64 bytes from 142.250.187.206: icmp_seq=4 ttl=117 time=9.081 ms
+64 bytes from 142.250.187.206: icmp_seq=5 ttl=117 time=9.223 ms
+64 bytes from 142.250.187.206: icmp_seq=6 ttl=117 time=11.363 ms
+```
+
+Be sure to cancel the request with `Ctrl` + `C`, otherwise this will go on indefinitely!
+
+We can see from the output that `ping` finds the IP address for google.com (142.250.187.206) and continues to hit this address. It also displays the amount of time each request took in milliseconds, which varies depending on the amount of traffic to the server.
+
+It’s worth noting that you can search for the IP address directly in your browser. If you type 142.250.187.206 into your address bar, you will be directed to google.com. In other words, if you know the IP address, you don’t need to know the domain name.
+
+As we covered earlier, domain names exist to make life easier, removing the need to remember the IP addresses themselves. If you already know a person’s phone number, you could technically just type that in instead of searching for the person’s name.
+
+## Tracing the route
+
+In addition to `ping`, we can also use `traceroute` to track the journey that the HTTP request takes along the way to the destination.
+
+Back in your terminal, run the following:
+
+```bash
+traceroute google.com
+```
+
+`traceroute` gives a log of all of the different routers that were involved in the process of requesting a domain from your device.
+
+```bash
+...
+2  ae56-ner001.csm.as13285.net (78.144.1.49)  7.156 ms  31.312 ms  6.456 ms
+3  ae54-scr101.thw.as13285.net (78.144.1.16)  8.979 ms  9.144 ms  33.609 ms
+4  host-78-144-5-9.as13285.net (78.144.5.9)  12.777 ms
+   72.14.209.10 (72.14.209.10)  10.383 ms
+   72.14.218.90 (72.14.218.90)  8.962 ms
+5  * * *
+6  209.85.252.180 (209.85.252.180)  10.904 ms
+   142.251.54.46 (142.251.54.46)  12.783 ms
+   142.251.52.142 (142.251.52.142)  9.162 ms
+7  74.125.242.83 (74.125.242.83)  10.663 ms
+   142.251.54.33 (142.251.54.33)  9.308 ms  9.154 ms
+8  * lhr25s33-in-f14.1e100.net (142.250.187.206)  10.908 ms  9.106 ms
+```
+
+The number on the left shows how many different locations were hit in order to reach the destination.
+
+## Purchasing domain names <a name="purchasing-domain-names"></a>
+
+In order to obtain a domain name you need to purchase it from an internet registrar. Examples of these include:
+
+- Namecheap
+- GoDaddy
+- HostGator
+- Ionos
+- 123-reg
+
+Typically domain names are purchased for one year at a time, with an annual renewal on a direct debit basis.
+
+Top Level Domain names are usually fairly inexpensive but prices vary quite widely depending on the type of domain.
+
+## WHOIS <a name="whois"></a>
+
+Whenever anyone purchases a domain, that information is stored in the _WHOIS_ database for public availability.
+
+The information stored includes the purchaser’s name, email, phone number and physical address, so it’s definitely important to be aware of this whenever you’re purchasing a domain.
+
+Many people would prefer to keep this information private, so internet registrars provide a service called _WHOIS Privacy Protection_. This service obfuscates the identifying information of the owner.
+
+This is normally achieved by another company registering the domain on the purchaser’s behalf, thereby displaying the company’s information instead of the actual domain owner’s. Depending on the provider this service is often provided for free or there will be a small fee per year.
+
+The WHOIS database is owned and maintained by _ICANN_, the Internet Corporation for Assigned Names and Numbers. ICANN acts as a global governing authority for selling, assigning and registering domain names.
+
+You can check out the WHOIS database for free using their <a href="https://whois.domaintools.com/" target="_blank">_Whois Lookup_</a> service. Simply search for a domain name and the site will return all of the data associated with that domain, such as the registrant, the registrar, the age of the domain (days since registered), the IP address, location and so on, including the full Whois Record.
+
+## Domain name availability
+
+Often a domain name you’d like to purchase may not be available because it’s already been registered by someone else. It may even be that it’s not even in use.
+
+Indeed, just because you own a domain name doesn’t mean you need to have an active website at that domain. It’s just like in the real world where you could own a parking spot but never park a car there, or own some land but never build a property.
+
+There are three main options if you would like to purchase the taken domain. You can either wait in the hope that it will expire, you can bid for it, or you can make a direct offer to the owner.
+
+Companies such as SnapNames will register your interest in a domain and automatically purchase it for you if it ever becomes available.
+
+There are also domain name auctions provided by companies like GoDaddy where multiple parties can bid for domains and they will be given to the highest bidder.
+
+Alternatively you can reach out to the owner through a registrar and see if they would be interested in selling the domain to you for an agreeable fee.
+
+## Domain names and web hosting
+
+It’s important to note that domain names and hosting are two different things. A domain name is provided to you by a registrar, and hosting is handled by a hosting company who will provide you with a server (or shared server) on which to host your data.
+
+You can buy your domain with a registrar and then host your website with that domain with a totally different company. Or you can choose to by your domain names and hosting from the same company. It’s totally up to you and there are various reasons for each approach.
+
+Having your domain and hosting separate gives you a lot of flexibility, as you may want to switch your hosting provider in the future depending on the needs of your website.
+
+## Recap
+
+You should now have a more complete understanding of the processes that take place when you make a request for a website, as well as the underlying infrastructure. Turns out there’s quite a bit to it!
+
+We explored IP addresses and how they are linked to human readable domain names via Domain Name Servers. We also revisited the <a href="https://www.createdeluxe.com/blog/what-is-http" target="_blank">HTTP</a> request cycle to understand how IP addresses are used to reach the destination server.
+
+Finally, we took a look at the WHOIS database and ICANN to find out where all of these domain names are stored and how they are maintained.
+
+## Next steps
+
+Congratulations! It’s at this point on your web development journey that you’re ready to dive deeper and get your hands on some HTML code.
