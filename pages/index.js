@@ -34,7 +34,7 @@ export default function Home({ allPostsData }) {
               </p>
               <p className='text-xl font-light'>
                 I enjoy building websites and applications using full-stack
-                JavaScript techologies like React and Node.js, and sharing what
+                JavaScript technologies like React and Node.js, and sharing what
                 I learn along the way.
               </p>
             </div>
