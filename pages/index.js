@@ -3,8 +3,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getSortedPostsData } from '../lib/posts';
 import Layout from '../components/layout';
-import Header from '../components/header';
-import Footer from '../components/footer';
 import SignupForm from '../components/signupForm';
 
 export async function getStaticProps() {
@@ -25,7 +23,6 @@ export default function Home({ allPostsData }) {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Layout>
-        <Header />
         <main>
           <section className='gap-3 my-12 md:flex md:items-center'>
             <div>
@@ -73,7 +70,6 @@ export default function Home({ allPostsData }) {
             </ul>
           </section>
         </main>
-        <Footer />
       </Layout>
     </div>
   );

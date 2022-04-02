@@ -36,7 +36,7 @@ export default function Header() {
   };
 
   return (
-    <header className='flex justify-between py-6 mt-4'>
+    <header className='flex justify-between py-6 my-4'>
       <Link href='/'>
         <a className='text-2xl tracking-wide'>
           luke<span className='font-semibold'>prosser</span>
