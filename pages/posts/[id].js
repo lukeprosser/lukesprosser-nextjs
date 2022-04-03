@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Image from 'next/image';
 import Layout from '../../components/layout';
 import { getAllPostIds, getPostData } from '../../lib/posts';
 
@@ -10,15 +11,23 @@ export async function getStaticPaths() {
   };
 }
 
-export default function Post({ postData }) {
+export default function Post({
+  postData: { id, title, cover_image, image_alt, tags, contentHtml },
+}) {
   return (
     <Layout>
       <Head>
-        <title>{postData.title}</title>
+        <title>{title}</title>
       </Head>
       <article className='mx-auto prose dark:prose-invert'>
-        <h1>{postData.title}</h1>
-        <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+        <Image
+          src={`/images/posts/${id}/${cover_image}`}
+          alt={image_alt}
+          width={1280}
+          height={853}
+        />
+        <h1 className='mt-6'>{title}</h1>
+        <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
       </article>
     </Layout>
   );

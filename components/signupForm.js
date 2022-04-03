@@ -55,7 +55,7 @@ export default function SignupForm() {
               <div className='ml-form-embedSubmit'>
                 <button
                   type='submit'
-                  className='w-full p-2 font-medium text-gray-100 bg-indigo-600 rounded hover:bg-indigo-500 dark:bg-indigo-500 primary dark:hover:bg-indigo-400'
+                  className='w-full p-2 font-medium text-gray-100 bg-indigo-600 rounded hover:bg-indigo-500'
                 >
                   Sign up
                 </button>

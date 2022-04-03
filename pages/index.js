@@ -54,7 +54,7 @@ export default function Home({ allPostsData }) {
                     key={id}
                     className='pb-8 my-12 border-b-2 sm:grid sm:grid-cols-3 sm:gap-6'
                   >
-                    <div className=''>
+                    <div>
                       <Image
                         src={`/images/posts/${id}/${cover_image}`}
                         alt={image_alt}
@@ -68,7 +68,7 @@ export default function Home({ allPostsData }) {
                           <a>{title}</a>
                         </Link>
                       </h3>
-                      <div className='mt-2 text-xs tracking-widest text-indigo-600 dark:font-medium hover:text-indigo-500 dark:text-indigo-300 dark:hover:text-indigo-400 md:text-sm lg:text-base'>
+                      <div className='mt-2 text-xs tracking-widest text-indigo-700 dark:font-medium hover:text-indigo-600 dark:text-indigo-400 dark:hover:text-indigo-300 md:text-sm lg:text-base'>
                         {tags.map((tag) => (
                           <span key={tag} className='mr-5'>
                             {tag.toUpperCase()}

@@ -1,7 +1,7 @@
 export default function LinkedIn() {
   return (
     <svg
-      className='w-6 h-6 text-gray-900 dark:fill-gray-100 hover:fill-indigo-600'
+      className='w-6 h-6 text-gray-900 dark:fill-gray-100 hover:fill-indigo-600 dark:hover:fill-indigo-300'
       xmlns='http://www.w3.org/2000/svg'
       viewBox='0 0 448 512'
     >
