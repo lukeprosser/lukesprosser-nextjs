@@ -1,43 +1,63 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
+import { serialize } from 'next-mdx-remote/serialize';
+import rehypeSlug from 'rehype-slug';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeHighlight from 'rehype-highlight';
+import remarkGfm from 'remark-gfm';
 import Layout from '../../components/layout';
 import { getAllPostIds, getPostData } from '../../lib/posts';
+import 'highlight.js/styles/atom-one-dark.css';
 
-export async function getStaticPaths() {
-  const paths = getAllPostIds();
-  return {
-    paths,
-    fallback: false,
-  };
-}
-
-export default function Post({
-  postData: { id, title, cover_image, image_alt, tags, contentHtml },
-}) {
+export default function Post({ post: { id, meta, source } }) {
   return (
     <Layout>
       <Head>
-        <title>{title}</title>
+        <title>{meta.title}</title>
       </Head>
       <article className='mx-auto prose dark:prose-invert'>
         <Image
-          src={`/images/posts/${id}/${cover_image}`}
-          alt={image_alt}
+          src={`/images/posts/${id}/${meta.image}`}
+          alt={meta.image_alt}
           width={1280}
           height={853}
         />
-        <h1 className='mt-6'>{title}</h1>
-        <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+        <h1 className='mt-6'>{meta.title}</h1>
+        <MDXRemote {...source} />
       </article>
     </Layout>
   );
 }
 
 export async function getStaticProps({ params }) {
-  const postData = await getPostData(params.id);
+  const { content, meta } = await getPostData(params.id);
+  const mdxSource = await serialize(content, {
+    mdxOptions: {
+      rehypePlugins: [
+        rehypeSlug,
+        [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+        rehypeHighlight,
+        remarkGfm,
+      ],
+    },
+  });
+
   return {
     props: {
-      postData,
+      post: {
+        id: params.id,
+        meta,
+        source: mdxSource,
+      },
     },
+  };
+}
+
+export async function getStaticPaths() {
+  const paths = getAllPostIds();
+  return {
+    paths,
+    fallback: false,
   };
 }
