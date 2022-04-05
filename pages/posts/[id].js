@@ -1,12 +1,15 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeHighlight from 'rehype-highlight';
+import rehypeExternalLinks from 'rehype-external-links';
 import remarkGfm from 'remark-gfm';
 import Layout from '../../components/layout';
+import InfoText from '../../components/infoText';
 import { getAllPostIds, getPostData } from '../../lib/posts';
 import 'highlight.js/styles/atom-one-dark.css';
 
@@ -24,7 +27,7 @@ export default function Post({ post: { id, meta, source } }) {
           height={853}
         />
         <h1 className='mt-6'>{meta.title}</h1>
-        <MDXRemote {...source} />
+        <MDXRemote {...source} components={{ Link, Image, InfoText }} />
       </article>
     </Layout>
   );
@@ -39,6 +42,7 @@ export async function getStaticProps({ params }) {
         [rehypeAutolinkHeadings, { behavior: 'wrap' }],
         rehypeHighlight,
         remarkGfm,
+        rehypeExternalLinks,
       ],
     },
   });

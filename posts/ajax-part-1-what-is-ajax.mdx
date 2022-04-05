@@ -66,11 +66,11 @@ Whenever you see a part of the UI changing after an interaction, you normally ha
 
 In the diagram below, we see the traditional request/response process from a client to a server:
 
-![JavaScript common request and response](./common-request-response.png 'JavaScript common request and response')
+![JavaScript common request and response](/images/posts/ajax-part-1-what-is-ajax/common-request-response.png 'JavaScript common request and response')
 
 In the next diagram we can see that a JavaScript call is made by the client and intercepted by the browser's AJAX engine. The request is then delivered to the server as an XMLHttpRequest (or 'XHR') object.
 
-![AJAX engine request and response](./ajax-request-response.png 'AJAX engine request and response')
+![AJAX engine request and response](/images/posts/ajax-part-1-what-is-ajax/ajax-request-response.png 'AJAX engine request and response')
 
 Data is returned from the server most commonly as JSON, however it could also be XML or plain text. The AJAX engine converts the data to an HTML response, which can then be rendered for the user.
 
@@ -105,11 +105,11 @@ Nowadays we more commonly check the `status` of a request, which is what we'll b
 As we'll see, working with the XMLHttpRequest object in JavaScript can be fairly verbose and repetitive. There are therefore a number of libraries and methods available that make working with AJAX simpler and more efficient. These include:
 
 - Fetch API (built in to JavaScript)
-- <a href="https://jquery.com/" target="_blank">jQuery</a> (third party DOM manipulation library)
-- <a href="https://axios-http.com/" target="_blank">Axios</a> (third party)
-- <a href="https://visionmedia.github.io/superagent/" target="_blank">Superagent</a> (third party)
-- <a href="http://prototypejs.org/learn/introduction-to-ajax" target="_blank">Prototype</a> (third party)
-- <a href="https://nodejs.org/api/http.html" target="_blank">Node HTTP</a> (part of Node)
+- [jQuery](https://jquery.com/) (third party DOM manipulation library)
+- [Axios](https://axios-http.com/) (third party)
+- [Superagent](https://visionmedia.github.io/superagent/) (third party)
+- [Prototype](http://prototypejs.org/learn/introduction-to-ajax) (third party)
+- [Node HTTP](https://nodejs.org/api/http.html) (part of Node)
 
 However, it's important to learn how the built-in XMLHttpRequest object works, as you're very likely to encounter it in existing codebases.
 
@@ -121,4 +121,4 @@ If you're only looking to utilise AJAX, it would likely be much more performant 
 
 We covered a lot in this article! Hopefully you now have a better understanding of what AJAX is, why it is used, its benefits for the user experience, as well has a theoretical overview of how it works.
 
-In <a href="https://www.createdeluxe.com/blog/ajax-part-2-loading-plain-text-data" target="_blank">AJAX Part 2: Loading Plain Text Data</a>, we'll dive deeper under the hood by building a demo application to load text data into a UI. This will provide a more practical understanding by allowing you to write some code!
+In <Link href="/posts/ajax-part-2-loading-plain-text-data"><a>AJAX Part 2: Loading Plain Text Data</a></Link>, we'll dive deeper under the hood by building a demo application to load text data into a UI. This will provide a more practical understanding by allowing you to write some code!

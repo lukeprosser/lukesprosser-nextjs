@@ -11,9 +11,9 @@ draft: false
 
 Now that we've discussed what AJAX is and why it came to be, let's see it in action. As AJAX enables communication between a client and a server, we need to spin up a local server in order to make requests.
 
-This article is the second in a series of guides all about AJAX. If you're new to AJAX check out <a href="https://www.createdeluxe.com/blog/ajax-part-1-what-is-ajax" target="_blank">AJAX Part 1: What is AJAX?</a>
+This article is the second in a series of guides all about AJAX. If you're new to AJAX check out <Link href="/posts/ajax-part-1-what-is-ajax"><a>AJAX Part 1: What is AJAX?</a></Link>
 
-Throughout the rest of this series I'll be using <a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code</a> to run the demo applications. I highly recommend VSCode as it's free, has an extensive feature set and is currently the most widely used text editor. In particular, it has a built-in easy-to-use server that we'll need in order to serve up the demo apps.
+Throughout the rest of this series I'll be using [Visual Studio Code](https://code.visualstudio.com/) to run the demo applications. I highly recommend VSCode as it's free, has an extensive feature set and is currently the most widely used text editor. In particular, it has a built-in easy-to-use server that we'll need in order to serve up the demo apps.
 
 ## AJAX in action
 
@@ -232,7 +232,7 @@ To recap, you can see that:
 
 We have all of the code in place, now let's run it! To do this we'll need to spin up a server using VSCode's handy built-in Live Server. Right click anywhere in the HTML file and select 'Open with Live Server'. This will open the application in your default browser.
 
-![App loaded](./app-loaded.png 'App loaded')
+![App loaded](/images/posts/ajax-part-2-loading-plain-text-data/app-loaded.png 'App loaded')
 
 Open up the developer console, then click on the 'Get text' button. You should see the `responseText` logged to the console output!
 
@@ -274,7 +274,7 @@ httpRequest.onload = function () {
 
 You can see that we set the paragraph element's `innerText` property equal to `this.responseText`. Now when we click the button, the text is rendered to the UI!
 
-![Text response](./text-response.png 'Text response')
+![Text response](/images/posts/ajax-part-2-loading-plain-text-data/text-response.png 'Text response')
 
 Now that our work is complete, if you want to stop the server, simply right-click the HTML document again and select 'Stop Live Server'.
 
@@ -282,4 +282,4 @@ Now that our work is complete, if you want to stop the server, simply right-clic
 
 In this lesson we learned how to load plain text data with AJAX. Hopefully the syntax is beginning to make sense but, if not, fear not! There will be plenty more opportunity to practice throughout the rest of the series.
 
-In <a href="https://www.createdeluxe.com/blog/ajax-part-3-loading-json-data" target="_blank">AJAX Part 3: Loading JSON Data</a>, we'll iterate on our demo application to load JSON data from a local server.
+In <Link href="/posts/ajax-part-3-loading-json-data"><a>AJAX Part 3: Loading JSON Data</a></Link>, we'll iterate on our demo application to load JSON data from a local server.
