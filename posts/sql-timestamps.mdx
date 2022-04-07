@@ -28,7 +28,9 @@ Wait...whaaaaaaaaaaaaat?! So DATETIME goes back to the year 1000 and TIMESTAMP o
 
 Yep. You're not mistaken. These times seem pretty arbitrary and there are various reasons for this which are outside the scope of this post. Either way, this is what we've got to work with.
 
-<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">'UTC' is an abbreviation for 'Universal Coordinated Time', or 'Coordinated Universal Time' as it's more commonly known. It used to be known as 'GMT' or 'Greenwich Mean Time', which was established in the UK around 300 years ago. UTC is a standard for coordinating times and timezones around the world.</p>
+<InfoText>
+  'UTC' is an abbreviation for 'Universal Coordinated Time', or 'Coordinated Universal Time' as it's more commonly known. It used to be known as 'GMT' or 'Greenwich Mean Time', which was established in the UK around 300 years ago. UTC is a standard for coordinating times and timezones around the world.
+</InfoText>
 
 ### Limitations
 
@@ -116,7 +118,9 @@ CREATE TABLE comments (
 
 This statement is basically saying: when the row is amended, update the _changed_at_ column with the CURRENT_TIMESTAMP.
 
-<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">I've used <em>CURRENT_TIMESTAMP</em> here simply so that you're aware of it. You could also use <em>NOW()</em> to achieve exactly the same thing.</p>
+<InfoText>
+  I've used <em>CURRENT_TIMESTAMP</em> here simply so that you're aware of it. You could also use <em>NOW()</em> to achieve exactly the same thing.
+</InfoText>
 
 Once again, let's add some comments so that we've got data to work with:
 

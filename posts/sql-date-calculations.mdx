@@ -19,11 +19,13 @@ This is all achieved by comparing two dates. In this particular case, the date t
 
 Fortunately, SQL has some built-in functions that allow us to compare dates right out of the box.
 
-<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">It's helpful to note that almost any function in SQL that has 'DATE' in its name will also work with times.</p>
+<InfoText>
+  It's helpful to note that almost any function in SQL that has 'DATE' in its name will also work with times.
+</InfoText>
 
 ## The data
 
-To demonstrate how these functions work, we'll use the 'people' data that we created in the original post on <a href="https://www.createdeluxe.com/blog/sql-data-types-dates-and-times" target="_blank">dates and times</a>:
+To demonstrate how these functions work, we'll use the 'people' data that we created in the original post on <Link href="/posts/sql-data-types-dates-and-times"><a>dates and times</a></Link>:
 
 | firstname | birthdate  | birthtime | birthdatetime       |
 | --------- | ---------- | --------- | ------------------- |
@@ -85,7 +87,9 @@ birthdatetime          DATE_ADD(birthdatetime, INTERVAL 1 MONTH)
 2040-12-15 08:32:28    2041-01-15 08:32:28
 ```
 
-<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">You can use DATE_SUB() to do the opposite i.e. subtract one date from another.</p>
+<InfoText>
+  You can use DATE_SUB() to do the opposite i.e. subtract one date from another.
+</InfoText>
 
 ## +/- operators
 

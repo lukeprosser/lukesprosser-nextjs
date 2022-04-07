@@ -5,11 +5,11 @@ author: 'Luke Prosser'
 cover_image: 'refine-select.jpg'
 image_alt: 'Picture of machinery under magnifying glass'
 tags: ['SQL']
-excerpt: 'In this post, I’ll dive deeper into SQL SELECT queries to generate more targeted, refined results. These are some of the most commonly used keywords and operators you’re likely to come across when out in the field.'
+excerpt: 'In this post, we’ll dive deeper into SQL SELECT queries to generate more targeted, refined results. These are some of the most commonly used keywords and operators you’re likely to come across when out in the field.'
 draft: false
 ---
 
-In this post, I’ll dive deeper into SQL _SELECT_ queries to generate more targeted, refined results.
+In this post, we’ll dive deeper into SQL _SELECT_ queries to generate more targeted, refined results.
 
 These are some of the most commonly used keywords and operators you’re likely to come across when out in the field.
 
@@ -89,7 +89,10 @@ John Smith
 Sally Evans
 ```
 
-<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">Remember, the above results are returned in the order in which they were <em>inserted</em>.</p>
+<InfoText>
+  Remember, the above results are returned in the order in which they were{' '}
+  <em>inserted</em>.
+</InfoText>
 
 _LIMIT_ can be used in combination with any of the other keywords mentioned, and data can also be returned in ascending or descending order:
 
@@ -122,7 +125,11 @@ Returns:
 06/06/2040
 ```
 
-<p style="background: #FDF259; padding: 1rem; font-size: 1rem;">Note that unlike the way strings are counted in SQL, LIMIT <em>does</em> count from 0 (i.e. it's zero-based). These small technicalities are fun, aren’t they?</p>
+<InfoText>
+  Note that unlike the way strings are counted in SQL, LIMIT <em>does</em> count
+  from 0 (i.e. it's zero-based). These small technicalities are fun, aren’t
+  they?
+</InfoText>
 
 ## LIKE
 
