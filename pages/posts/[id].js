@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
+import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
@@ -19,7 +19,7 @@ export default function Post({ post: { id, meta, source } }) {
       <Head>
         <title>{meta.title}</title>
       </Head>
-      <article className='mx-auto prose dark:prose-invert'>
+      <article className='mx-auto prose dark:prose-invert dark:prose-a:prose-headings:text-gray-100 prose-a:prose-headings:text-gray-900 prose-a:no-underline prose-a:text-indigo-700 dark:prose-a:text-indigo-400 dark:hover:prose-a:text-indigo-300 hover:prose-a:text-indigo-500'>
         <h1 className='mt-6'>{meta.title}</h1>
         <Image
           src={`/images/posts/${id}/${meta.image}`}
@@ -27,7 +27,6 @@ export default function Post({ post: { id, meta, source } }) {
           width={1280}
           height={500}
           objectFit='cover'
-          className='rounded'
         />
         <MDXRemote {...source} components={{ Link, Image, InfoText }} />
       </article>

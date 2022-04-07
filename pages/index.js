@@ -61,7 +61,6 @@ export default function Home({ allPostsData }) {
                           alt={image_alt}
                           width={1280}
                           height={853}
-                          className='rounded'
                         />
                       </a>
                     </Link>
