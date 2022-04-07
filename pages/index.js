@@ -54,14 +54,17 @@ export default function Home({ allPostsData }) {
                     key={id}
                     className='pb-8 my-12 border-b-2 sm:grid sm:grid-cols-3 sm:gap-6'
                   >
-                    <div>
-                      <Image
-                        src={`/images/posts/${id}/${cover_image}`}
-                        alt={image_alt}
-                        width={1280}
-                        height={853}
-                      />
-                    </div>
+                    <Link href={`/posts/${id}`}>
+                      <a>
+                        <Image
+                          src={`/images/posts/${id}/${cover_image}`}
+                          alt={image_alt}
+                          width={1280}
+                          height={853}
+                          className='rounded'
+                        />
+                      </a>
+                    </Link>
                     <div className='mt-3 sm:mt-0 sm:col-span-2'>
                       <h3 className='text-xl md:text-2xl'>
                         <Link href={`/posts/${id}`}>

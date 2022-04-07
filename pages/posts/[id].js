@@ -20,13 +20,15 @@ export default function Post({ post: { id, meta, source } }) {
         <title>{meta.title}</title>
       </Head>
       <article className='mx-auto prose dark:prose-invert'>
+        <h1 className='mt-6'>{meta.title}</h1>
         <Image
           src={`/images/posts/${id}/${meta.image}`}
           alt={meta.image_alt}
           width={1280}
-          height={853}
+          height={500}
+          objectFit='cover'
+          className='rounded'
         />
-        <h1 className='mt-6'>{meta.title}</h1>
         <MDXRemote {...source} components={{ Link, Image, InfoText }} />
       </article>
     </Layout>

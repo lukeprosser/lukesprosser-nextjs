@@ -22,7 +22,7 @@ By the end of the article you will be able to:
 - [List each of the XMLHttpRequest object's 'ready states'](#readystate)
 - [List a number of libraries and methods that work with AJAX](#libraries-and-other-methods)
 
-## What is AJAX? <a name="what-is-ajax"></a>
+## What is AJAX?
 
 'AJAX' stands for 'Asynchronous JavaScript and XML'.
 
@@ -50,7 +50,7 @@ Nowadays any modern web application is much more likely to be sending and receiv
 
 I therefore find it more useful to think of the process in terms of 'AJAJ' i.e. 'Asynchronous JavaScript and JSON'.
 
-## Why use it? <a name="why-use-it"></a>
+## Why use it?
 
 Ok, so we now know what AJAX is, but what's the point of it? Why should we actually use it?
 
@@ -62,7 +62,7 @@ Just check out a modern web application like Facebook or Twitter. Imagine having
 
 Whenever you see a part of the UI changing after an interaction, you normally have AJAX to thank. This makes it great for single page applications where the user expects to interface with the UI in the same way that they would with a desktop application, without having to wait for the browser to reload the entire page.
 
-## How does it work? <a name="how-does-it-work"></a>
+## How does it work?
 
 In the diagram below, we see the traditional request/response process from a client to a server:
 
@@ -76,7 +76,7 @@ Data is returned from the server most commonly as JSON, however it could also be
 
 This is much faster than waiting for an entire page response, providing a superior and more interactive user experience.
 
-## XMLHttpRequest object <a name="xmlhttprequest-object"></a>
+## XMLHttpRequest object
 
 So the client sends a request to the server in the form of an XMLHttpRequest (or 'XHR') object, but what does this object look like and how does it work?
 
@@ -84,7 +84,7 @@ It's essentially an API (Application Programming Interface) in the form of an ob
 
 This object can be used with both HTTP and HTTPS protocols and, as mentioned earlier, it can work with data other than XML, including JSON and plain text.
 
-## readyState <a name="readystate"></a>
+## readyState
 
 It's worth pointing out that the XMLHttpRequest object has a property called `readyState`. This property returns the state that an XMLHttpRequest client is in at any one time throughout the AJAX operation. There are 5 stages:
 
@@ -100,7 +100,7 @@ When the XMLHttpRequest object is instantiated, the `readyState` is `0` (UNSENT)
 
 Nowadays we more commonly check the `status` of a request, which is what we'll be using for our examples, but you will likely come across `readyState` in older codebases.
 
-## Libraries and other methods <a name="libraries-and-other-methods"></a>
+## Libraries and other methods
 
 As we'll see, working with the XMLHttpRequest object in JavaScript can be fairly verbose and repetitive. There are therefore a number of libraries and methods available that make working with AJAX simpler and more efficient. These include:
 

@@ -29,7 +29,7 @@ One of the great things to mention is that these methods can be _chained togethe
   While I (highly) recommend getting to grips with the theory behind these techniques and knowing <em>why</em> something works, this serves as more of an at-a-glance guide for the times when you can’t quite remember what the darn method is called that does that awesome thing that you could really use right now. For a more detailed overview of each API, I’ve included a link to the relevant MDN doc.
 </InfoText>
 
-## forEach() <a name="for-each"></a>
+## forEach()
 
 The _forEach()_ method enables us to iterate over every item in an array and execute a provided function on every single iteration.
 
@@ -46,20 +46,20 @@ Here is the _forEach()_ equivalent:
 ```javascript
 const companies = [
     {
-        name: ‘Apple’,
-        est: ‘1977’
+        name: 'Apple',
+        est: '1977'
     },
     {
-        name: ‘Facebook’,
-        est: ‘2004’
+        name: 'Facebook',
+        est: '2004'
     },
     {
-        name: ‘Google’,
-        est: ‘1998’
+        name: 'Google',
+        est: '1998'
     },
     {
-        name: ‘Microsoft’
-        est: '1975’
+        name: 'Microsoft',
+        est: '1975'
     }
 ];
 
@@ -74,7 +74,7 @@ companies.forEach(function(company) {
 
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach" target="_blank">forEach MDN documentation</a>
 
-## filter() <a name="filter"></a>
+## filter()
 
 The _filter()_ method filters items out from an array and returns a new array.
 
@@ -136,7 +136,7 @@ console.log(retailCompanies);
 
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" target="_blank">filter MDN documentation</a>
 
-## map() <a name="map"></a>
+## map()
 
 The _map()_ method enables us to perform an action on _every_ item in an array and return a new array with the results.
 
@@ -180,7 +180,7 @@ console.log(agesCalc);
 
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map" target="_blank">map MDN documentation</a>
 
-## sort() <a name="sort"></a>
+## sort()
 
 The _sort()_ method allows us to compare values in an array and move them up and down in the array order depending on a condition, returning `1` (`true`) or `-1` (`false`).
 
@@ -226,7 +226,7 @@ console.log(sortAges);
 
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort" target="_blank">sort MDN documentation</a>
 
-## reduce() <a name="reduce"></a>
+## reduce()
 
 _reduce()_ takes in a reducer function (that we can create) and applies it to _every_ element in the array, returning a single value. In other words, it can take an array of elements, process them by some condition/action, and _reduce_ them down to one value.
 
@@ -281,7 +281,7 @@ console.log(totalYears);
 
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce" target="_blank">reduce MDN documentation</a>
 
-## find() <a name="find"></a>
+## find()
 
 The _find()_ method will return the _first_ element that matches a provided condition. It’s important to note that it will stop iterating once it finds this first element.
 
@@ -295,7 +295,7 @@ const items = [
 ]
 
 const foundItem = items.find(item => {
-  return item.name === ‘Book';
+  return item.name === 'Book';
 })
 
 console.log(foundItem);
@@ -306,12 +306,12 @@ This will return the very first item that it finds in the array that returns `tr
 The arrow function equivalent would be as follows:
 
 ```javascript
-const foundItem = items.find(item => item.name === ‘Book’);
+const foundItem = items.find(item => item.name === 'Book');
 ```
 
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find" target="_blank">find MDN documentation</a>
 
-## some() <a name="some"></a>
+## some()
 
 _some()_ will check array elements for a condition and return `true` if any items meet that condition.
 
@@ -342,7 +342,7 @@ const hasInexpensiveItem = items.some((item) => item.price <= 100);
 
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some" target="_blank">some MDN documentation</a>
 
-## every() <a name="every"></a>
+## every()
 
 The _every()_ method is similar to _some()_, only it will test an array for a condition and returns `true` if _all_ items meet the condition.
 
@@ -371,7 +371,7 @@ const hasInexpensiveItem = items.every((item) => item.price <= 1000);
 
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every" target="_blank">every MDN documentation</a>
 
-## includes() <a name="includes"></a>
+## includes()
 
 The _includes()_ method will determine whether or not an array includes a certain value among its entries, returning `true` or `false` as appropriate.
 
