@@ -29,7 +29,7 @@ export default function Footer() {
           <GitHub />
         </a>
       </div>
-      <p className='py-4'>&copy; Luke Prosser {year}</p>
+      <p className='py-4 font-light'>&copy; Luke Prosser {year}</p>
     </footer>
   );
 }

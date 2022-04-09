@@ -4,7 +4,7 @@ import Image from 'next/image';
 export default function PostsIndex({ posts }) {
   return (
     <ul>
-      {posts.map(({ id, title, image, image_alt, tags, excerpt }) => (
+      {posts.map(({ id, title, cover_image, image_alt, tags, excerpt }) => (
         <li
           key={id}
           className='pb-8 my-12 border-b-2 sm:grid sm:grid-cols-3 sm:gap-6'
@@ -12,7 +12,7 @@ export default function PostsIndex({ posts }) {
           <Link href={`/posts/${id}`}>
             <a>
               <Image
-                src={`/images/posts/${id}/${image}`}
+                src={`/images/posts/${id}/${cover_image}`}
                 alt={image_alt}
                 width={1280}
                 height={853}

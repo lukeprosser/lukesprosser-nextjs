@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import { getSortedPostsData } from '../lib/posts';
 import Layout from '../components/layout';
 import SignupForm from '../components/signupForm';
@@ -38,6 +39,13 @@ export default function Home({ posts }) {
           <section className='mt-20'>
             <h2 className='text-3xl sm:text-4xl'>Latest from the blog</h2>
             <PostsIndex posts={posts} />
+            <div className='flex justify-end'>
+              <Link href='/blog'>
+                <a className='text-lg text-indigo-700 dark:font-medium hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300'>
+                  See all posts →
+                </a>
+              </Link>
+            </div>
           </section>
         </main>
       </Layout>
@@ -49,7 +57,7 @@ export async function getStaticProps() {
   const allPostsData = getSortedPostsData();
   return {
     props: {
-      posts: allPostsData.map((post) => post.meta),
+      posts: allPostsData.map((post) => post.meta).slice(0, 5),
     },
   };
 }

@@ -37,12 +37,21 @@ export default function Header() {
 
   return (
     <header className='flex justify-between py-6 my-4'>
-      <Link href='/'>
-        <a className='text-2xl tracking-wide'>
-          luke<span className='font-semibold'>prosser</span>
-        </a>
-      </Link>
-      {renderThemeChanger()}
+      <div>
+        <Link href='/'>
+          <a className='text-2xl tracking-wide'>
+            luke<span className='font-semibold'>prosser</span>
+          </a>
+        </Link>
+      </div>
+      <div className='flex items-center gap-8'>
+        <Link href='/blog'>
+          <a className='text-lg font-light tracking-wide hover:text-indigo-500 dark:hover:text-indigo-300'>
+            Blog
+          </a>
+        </Link>
+        {renderThemeChanger()}
+      </div>
     </header>
   );
 }
