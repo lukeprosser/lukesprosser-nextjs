@@ -13,7 +13,7 @@ import InfoText from '../../components/infoText';
 import { getAllPostIds, getPostData } from '../../lib/posts';
 import 'highlight.js/styles/atom-one-dark.css';
 
-export default function Post({ post: { id, meta, source } }) {
+export default function Post({ post: { meta, source } }) {
   return (
     <Layout>
       <Head>
@@ -22,7 +22,7 @@ export default function Post({ post: { id, meta, source } }) {
       <article className='mx-auto prose dark:prose-invert dark:prose-a:prose-headings:text-gray-100 prose-a:prose-headings:text-gray-900 prose-a:no-underline prose-a:text-indigo-700 dark:prose-a:text-indigo-400 dark:hover:prose-a:text-indigo-300 hover:prose-a:text-indigo-500'>
         <h1 className='mt-6'>{meta.title}</h1>
         <Image
-          src={`/images/posts/${id}/${meta.image}`}
+          src={`/images/posts/${meta.id}/${meta.image}`}
           alt={meta.image_alt}
           width={1280}
           height={500}
@@ -51,7 +51,6 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       post: {
-        id: params.id,
         meta,
         source: mdxSource,
       },
