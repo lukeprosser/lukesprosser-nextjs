@@ -1,18 +1,16 @@
 // REFERENCE FILE FOR EVENTUAL BLOG PAGE
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { getSortedPostsData } from '../../lib/posts';
 import Layout from '../../components/layout';
 import PostsIndex from '../../components/postsIndex';
+import Pagination from '../../components/pagination';
 
-export default function Blog({ posts, page, totalPages }) {
-  const router = useRouter();
-
+export default function Blog({ posts, currentPage, totalPages }) {
   return (
     <>
       <Head>
         <title>
-          Blog - Page {page} of {totalPages}
+          Blog - Page {currentPage} of {totalPages}
         </title>
         <meta name='description' content='Blog' />
       </Head>
@@ -20,36 +18,11 @@ export default function Blog({ posts, page, totalPages }) {
         <main>
           <section className='mt-10'>
             <h1 className='text-2xl sm:text-3xl'>
-              Blog - Page {page} of {totalPages}
+              Blog - Page {currentPage} of {totalPages}
             </h1>
           </section>
           <PostsIndex posts={posts} />
-          <div className='flex justify-end gap-6'>
-            {/* Make button a component with consistent styles */}
-            {/* Props will need integer expression, disabled value */}
-            <button
-              onClick={() => router.push(`?page=${page - 1}`)}
-              disabled={page <= 1}
-              className='border-2 rounded px-4 py-2 disabled:bg-slate-200 disabled:text-gray-400'
-            >
-              Previous
-            </button>
-            {Array.from(Array(totalPages).keys()).map((pageNum) => (
-              <button
-                key={pageNum + 1}
-                onClick={() => router.push(`?page=${pageNum + 1}`)}
-              >
-                {pageNum + 1}
-              </button>
-            ))}
-            <button
-              onClick={() => router.push(`?page=${page + 1}`)}
-              disabled={page >= totalPages}
-              className='border-2 rounded px-4 py-2 disabled:bg-slate-200 disabled:text-gray-400'
-            >
-              Next
-            </button>
-          </div>
+          <Pagination currentPage={currentPage} totalPages={totalPages} />
         </main>
       </Layout>
     </>
@@ -70,7 +43,7 @@ export async function getServerSideProps({ query: { page = 1 } }) {
       posts: allPostsData
         .map((post) => post.meta)
         .slice(index, index + postLimit),
-      page: parseInt(page),
+      currentPage: pageInt,
       totalPosts,
       postLimit,
       totalPages,
