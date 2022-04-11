@@ -11,7 +11,6 @@ export default function Home({ posts }) {
       <Head>
         <title>Luke Prosser</title>
         <meta name='description' content='Luke Prosser - Web Developer' />
-        <link rel='icon' href='/favicon.ico' />
       </Head>
       <Layout>
         <main>
