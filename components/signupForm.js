@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 
-const FORM_SIGNUP_CODE = process.env.FORM_SIGNUP_CODE;
-const FORM_SIGNUP_ACTION_CODE = process.env.FORM_SIGNUP_ACTION_CODE;
-const FORM_SIGNUP_SCRIPT_CODE = process.env.FORM_SIGNUP_SCRIPT_CODE;
+const FORM_SIGNUP_CODE = process.env.NEXT_PUBLIC_FORM_SIGNUP_CODE;
+const FORM_SIGNUP_ACTION_CODE = process.env.NEXT_PUBLIC_FORM_SIGNUP_ACTION_CODE;
+const FORM_SIGNUP_SCRIPT_CODE = process.env.NEXT_PUBLIC_FORM_SIGNUP_SCRIPT_CODE;
 
 export default function SignupForm() {
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function SignupForm() {
               method='post'
               target='_blank'
             >
-              <div className='my-4 ml-form-formContent'>
+              <div className='my-4 text-slate-700 ml-form-formContent'>
                 <div className='mb-2 ml-form-fieldRow '>
                   <div className='ml-field-group ml-field-name ml-validate-required'>
                     <input
