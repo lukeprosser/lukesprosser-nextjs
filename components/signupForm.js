@@ -1,12 +1,8 @@
 import { useEffect } from 'react';
 
-const FORM_SIGNUP_CODE = process.env.NEXT_PUBLIC_FORM_SIGNUP_CODE;
-const FORM_SIGNUP_ACTION_CODE = process.env.NEXT_PUBLIC_FORM_SIGNUP_ACTION_CODE;
-const FORM_SIGNUP_SCRIPT_CODE = process.env.NEXT_PUBLIC_FORM_SIGNUP_SCRIPT_CODE;
-
 export default function SignupForm() {
   useEffect(() => {
-    const js = `function ml_webform_success_${FORM_SIGNUP_CODE}() {
+    const js = `function ml_webform_success_290192() {
       var $ = ml_jQuery || jQuery;
       $('.ml-subscribe-form-290192 .row-success').show();
       $('.ml-subscribe-form-290192 .row-form').hide();
@@ -17,13 +13,13 @@ export default function SignupForm() {
     document.body.appendChild(script);
 
     const script2 = document.createElement('script');
-    script2.src = `https://groot.mailerlite.com/js/w/webforms.min.js?${FORM_SIGNUP_SCRIPT_CODE}`;
+    script2.src = `https://groot.mailerlite.com/js/w/webforms.min.js?ve398743b733fc0b40dcbf5777b0b4406`;
     document.body.appendChild(script2);
   }, []);
 
   return (
     <div
-      id={`mlb2-${FORM_SIGNUP_CODE}`}
+      id={`mlb2-290192`}
       className='p-6 mt-6 text-lg font-light rounded md:mt-0 bg-slate-100 dark:bg-slate-800 ml-form-embedContainer ml-subscribe-form ml-subscribe-form-290192'
     >
       <div className='ml-form-align-center '>
@@ -37,7 +33,7 @@ export default function SignupForm() {
             </div>
             <form
               className='ml-block-form'
-              action={`https://assets.mailerlite.com/jsonp/22375/forms/${FORM_SIGNUP_ACTION_CODE}/subscribe`}
+              action={`https://assets.mailerlite.com/jsonp/22375/forms/52298436392780807/subscribe`}
               data-code=''
               method='post'
               target='_blank'
