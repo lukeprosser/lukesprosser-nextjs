@@ -18,6 +18,14 @@ export default function Post({ post: { meta, source } }) {
     <Layout>
       <Head>
         <title>{meta.title}</title>
+        <meta name='twitter:card' content='summary_large_image' />
+        <meta name='twitter:site' content='@lukesprosser' />
+        <meta name='twitter:title' content={meta.title} />
+        <meta name='twitter:description' content={meta.excerpt} />
+        <meta
+          name='twitter:image'
+          content={`https://www.lukesprosser.com/_next/image?url=/images/posts/${meta.id}/${meta.cover_image}&w=3840&q=75`}
+        />
       </Head>
       <article className='w-full mx-auto prose dark:prose-invert dark:prose-a:prose-headings:text-gray-100 prose-a:prose-headings:text-gray-900 prose-a:no-underline prose-a:text-indigo-700 dark:prose-a:text-indigo-400 dark:hover:prose-a:text-indigo-300 hover:prose-a:text-indigo-500'>
         <h1 className='mt-6'>{meta.title}</h1>
