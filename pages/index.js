@@ -11,6 +11,17 @@ export default function Home({ posts }) {
       <Head>
         <title>Luke Prosser</title>
         <meta name='description' content='Luke Prosser - Web Developer' />
+        <meta name='twitter:card' content='summary_large_image' />
+        <meta name='twitter:site' content='@lukesprosser' />
+        <meta name='twitter:title' content='Luke Prosser' />
+        <meta
+          name='twitter:description'
+          content='Luke Prosser - Web Developer'
+        />
+        <meta
+          name='twitter:image'
+          content={`https://f396-92-14-73-63.eu.ngrok.io/_next/image?url=/images/twitter-card.png&w=1748&q=75`}
+        />
       </Head>
       <Layout>
         <main>
