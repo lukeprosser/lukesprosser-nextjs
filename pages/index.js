@@ -20,7 +20,7 @@ export default function Home({ posts }) {
         />
         <meta
           name='twitter:image'
-          content={`https://f396-92-14-73-63.eu.ngrok.io/_next/image?url=/images/twitter-card.png&w=1748&q=75`}
+          content={`https://www.lukesprosser.com/_next/image?url=/images/twitter-card.png&w=1748&q=75`}
         />
       </Head>
       <Layout>
