@@ -9,6 +9,7 @@ import rehypeHighlight from 'rehype-highlight';
 import rehypeExternalLinks from 'rehype-external-links';
 import remarkGfm from 'remark-gfm';
 import Layout from '../../components/layout';
+import SignupForm from '../../components/signupForm';
 import InfoText from '../../components/infoText';
 import { getAllPostIds, getPostData } from '../../lib/posts';
 import 'highlight.js/styles/atom-one-dark.css';
@@ -27,7 +28,7 @@ export default function Post({ post: { meta, source } }) {
           content={`https://www.lukesprosser.com/_next/image?url=/images/posts/${meta.id}/${meta.cover_image}&w=3840&q=75`}
         />
       </Head>
-      <article className='w-full mx-auto prose dark:prose-invert dark:prose-a:prose-headings:text-gray-100 prose-a:prose-headings:text-gray-900 prose-a:no-underline prose-a:text-indigo-700 dark:prose-a:text-indigo-400 dark:hover:prose-a:text-indigo-300 hover:prose-a:text-indigo-500'>
+      <article className='w-full mx-auto mb-10 prose dark:prose-invert dark:prose-a:prose-headings:text-gray-100 prose-a:prose-headings:text-gray-900 prose-a:no-underline prose-a:text-indigo-700 dark:prose-a:text-indigo-400 dark:hover:prose-a:text-indigo-300 hover:prose-a:text-indigo-500'>
         <h1 className='mt-6'>{meta.title}</h1>
         <Image
           src={`/images/posts/${meta.id}/${meta.cover_image}`}
@@ -38,6 +39,7 @@ export default function Post({ post: { meta, source } }) {
         />
         <MDXRemote {...source} components={{ Link, Image, InfoText }} />
       </article>
+      <SignupForm />
     </Layout>
   );
 }

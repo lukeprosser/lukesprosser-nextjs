@@ -20,7 +20,7 @@ export default function SignupForm() {
   return (
     <div
       id={`mlb2-290192`}
-      className='p-6 mt-6 text-lg font-light rounded md:mt-0 bg-slate-100 dark:bg-slate-800 ml-form-embedContainer ml-subscribe-form ml-subscribe-form-290192'
+      className='p-6 mx-auto mt-6 text-lg font-light rounded md:mt-0 bg-slate-100 dark:bg-slate-800 ml-form-embedContainer ml-subscribe-form ml-subscribe-form-290192'
     >
       <div className='ml-form-align-center '>
         <div className='ml-form-embedWrapper embedForm'>
