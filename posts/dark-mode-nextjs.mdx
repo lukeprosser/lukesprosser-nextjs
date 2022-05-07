@@ -1,0 +1,337 @@
+---
+title: 'How To Implement Dark Mode In Next.js With Tailwind CSS'
+date: '2022-05-07'
+author: 'Luke Prosser'
+cover_image: 'dark-mode-nextjs.jpg'
+image_alt: 'Picture of light bulb intersecting two different background colours'
+tags: ['javascript', 'react', 'nextjs', 'css']
+excerpt: 'In this guide I’ll break down how to create a dark mode toggle in your Next.js app with the help of Tailwind CSS and next-themes.'
+draft: false
+---
+
+Whenever I visit a website, be it to read documentation or a blog post, I always appreciate the ability to toggle between light and dark modes, especially when there’s a lot of text to digest.
+
+As part of my website redesign and build, I knew I wanted to provide a dark mode option to readers. Here’s what we’ll be aiming to achieve in the site header:
+
+![Header component with dark mode toggle button](/images/posts/dark-mode-nextjs/header-component.png 'Header component with dark mode toggle button')
+
+In this guide I’ll show you exactly how I did it!
+
+<InfoText>
+  This guide assumes that you already have a Next.js app set up with Tailwind and a `tailwind.config.js` file in place.
+</InfoText>
+
+## Functionality
+
+In order for this to work, we will need to:
+
+- Determine the browser’s default theme preference as a default.
+- Track the user’s current theme choice.
+- Create buttons to enable the user to toggle the theme.
+- Display the appropriate toggle button based on the current theme.
+- Toggle the theme.
+- Change the theme styles dynamically based on a `dark` class.
+
+After some research, adding a dark mode in Next.js and controlling it with Tailwind was fairly trivial thanks to a package called <a href="https://www.npmjs.com/package/next-themes" target="_blank">next-themes</a>.
+
+Let’s break down this approach, step by step.
+
+## 1. Create a theme provider
+
+First we import the `ThemeProvider` from next-themes in our `_app.js` file:
+
+```jsx
+// pages/_app.js
+
+import { ThemeProvider } from 'next-themes';
+```
+
+This provider will give access to the current theme throughout the application.
+
+Then we need to provide the `enableSystem` prop to detect the user’s browser preference as a fallback (if it exists), as well as set the `attribute` prop to `class` so that the `class` HTML attribute is used to store the active theme:
+
+```jsx
+// pages/_app.js
+
+import '../styles/globals.css';
+import { ThemeProvider } from 'next-themes';
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <ThemeProvider enableSystem={true} attribute='class'>
+      <Component {...pageProps} />
+    </ThemeProvider>
+  );
+}
+
+export default MyApp;
+```
+
+This class will be monitored by Tailwind CSS in order to apply the styles according to the current theme. We’ll set that up in the next step.
+
+## 2. Configure Tailwind
+
+In `tailwind.config.js` change the darkMode property from `false` to `class`:
+
+```jsx
+// tailwind.config.js
+
+module.exports = {
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+  ],
+  darkMode: 'class',
+  theme: {
+	...
+```
+
+With this configured, whenever the `dark` class is present in the HTML tree, Tailwind will apply the dark styles, otherwise it will default to the light styles.
+
+## 3. Import the button icons
+
+For the dark and light button icons I used Tailwind’s very own <a href="https://heroicons.com/" target="_blank">Heroicons</a>, which is a collection of awesome SVG icons that can be installed as an NPM package.
+
+For my website, the dark mode toggle will be positioned in the `Header` component. Here I import the moon and sun icons from Heroicons, as well as the `useTheme` method from next-themes:
+
+```jsx
+// components/header.js
+
+import { useTheme } from 'next-themes';
+import { MoonIcon, SunIcon } from '@heroicons/react/solid';
+```
+
+## 4. Display the correct toggle button
+
+`useTheme` provides access to the system theme and the currently selected theme, as well as a method to change the theme called `setTheme`. I added these to my `Header` function:
+
+```jsx
+// components/header.js
+
+export default function Header() {
+  const { systemTheme, theme, setTheme } = useTheme();
+	...
+```
+
+Now that we have a way to track the current theme from the provider, we can create a function that renders the appropriate icon depending on the current theme:
+
+```jsx
+// components/header.js
+
+const renderThemeChanger = () => {
+  const currentTheme = theme === 'system' ? systemTheme : theme;
+
+  if (currentTheme === 'dark') {
+    return (
+      <SunIcon
+        className='w-7 h-7'
+        role='button'
+        onClick={() => setTheme('light')}
+      />
+    );
+  } else {
+    return (
+      <MoonIcon
+        className='w-7 h-7'
+        role='button'
+        onClick={() => setTheme('dark')}
+      />
+    );
+  }
+};
+```
+
+First we check if a default `system` theme has been provided. If it exists we default to this setting, otherwise we use the theme from `useTheme`, which will either be the default from next-themes or the one chosen by the user.
+
+The `renderThemeChanger()` method can then be called immediately in the JSX to render the correct icon on page load:
+
+```jsx
+// components/header.js
+
+return (
+  <header className='flex justify-between py-6 my-4'>
+    <div>
+      <Link href='/'>
+        <a className='text-2xl tracking-wide'>
+          luke<span className='font-semibold'>prosser</span>
+        </a>
+      </Link>
+    </div>
+    <div className='flex items-center gap-8'>
+      <Link href='/blog'>
+        <a className='text-lg font-light tracking-wide hover:text-indigo-500 dark:hover:text-indigo-300'>
+          Blog
+        </a>
+      </Link>
+      {renderThemeChanger()}
+    </div>
+  </header>
+);
+```
+
+## 5. Check that the component has mounted
+
+The code we have so far should work just fine locally. However, when the site is deployed we don’t know the theme on the server, so the values returned from `useTheme` would be undefined until mounted on the client.
+
+This means that the theme icon will not match the current theme, which would be a really bad user experience! For example, the moon icon could be displayed in dark mode, or the sun icon could be displayed in light mode, which wouldn’t make sense.
+
+To fix this we need to ensure that we only render the icon when the header component is mounted on the client. We can achieve this with React’s `useState` and `useEffect` hooks, so let’s import them:
+
+```jsx
+// components/header.js
+
+import { useState, useEffect } from 'react';
+```
+
+Next we need to create state variables in order to track whether or not the component has been mounted. We can add these to the `Header` function:
+
+```jsx
+// components/header.js
+
+export default function Header() {
+  const { systemTheme, theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+	...
+```
+
+We set the initial value to `false`, and then use the `useEffect` hook to switch this value to `true` when the component is rendered:
+
+```jsx
+// components/header.js
+
+export default function Header() {
+  const { systemTheme, theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+	...
+```
+
+Inside the `renderThemeChanger()` function we need to check for the component’s mounted state and set the `currentTheme` value accordingly:
+
+```jsx
+// components/header.js
+
+const renderThemeChanger = () => {
+    if (!mounted) return null;
+
+    const currentTheme = theme === 'system' ? systemTheme : theme;
+		...
+```
+
+Then it’s simply a case of displaying the moon icon or the sun icon depending on the value of `currentTheme`:
+
+```jsx
+// components/header.js
+
+if (currentTheme === 'dark') {
+  return (
+    <SunIcon
+      className='w-7 h-7'
+      role='button'
+      onClick={() => setTheme('light')}
+    />
+  );
+} else {
+  return (
+    <MoonIcon
+      className='w-7 h-7'
+      role='button'
+      onClick={() => setTheme('dark')}
+    />
+  );
+}
+```
+
+Here’s the full `Header` component for reference:
+
+```jsx
+// components/header.js
+
+import { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
+import Link from 'next/link';
+import { MoonIcon, SunIcon } from '@heroicons/react/solid';
+
+export default function Header() {
+  const { systemTheme, theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const renderThemeChanger = () => {
+    if (!mounted) return null;
+
+    const currentTheme = theme === 'system' ? systemTheme : theme;
+
+    if (currentTheme === 'dark') {
+      return (
+        <SunIcon
+          className='w-7 h-7'
+          role='button'
+          onClick={() => setTheme('light')}
+        />
+      );
+    } else {
+      return (
+        <MoonIcon
+          className='w-7 h-7'
+          role='button'
+          onClick={() => setTheme('dark')}
+        />
+      );
+    }
+  };
+
+  return (
+    <header className='flex justify-between py-6 my-4'>
+      <div>
+        <Link href='/'>
+          <a className='text-2xl tracking-wide'>
+            luke<span className='font-semibold'>prosser</span>
+          </a>
+        </Link>
+      </div>
+      <div className='flex items-center gap-8'>
+        <Link href='/blog'>
+          <a className='text-lg font-light tracking-wide hover:text-indigo-500 dark:hover:text-indigo-300'>
+            Blog
+          </a>
+        </Link>
+        {renderThemeChanger()}
+      </div>
+    </header>
+  );
+}
+```
+
+## 6. Create dark mode styles
+
+Now that all of the logic is in place to detect and switch between themes, we need to specify what the themes will look like!
+
+Once you’ve designed your light theme, it’s easy to add ‘dark’ variations by prefixing dark mode styles with the `dark:` class. This will only apply the dark styles when the dark theme has been selected.
+
+For example, in my `globals.css` file I apply dark variants to the `body` background and text colours:
+
+```css
+/* styles/globals.css */
+
+@layer base {
+  body {
+    @apply text-gray-900 bg-gray-50 dark:bg-gray-900 dark:text-gray-100;
+  }
+```
+
+When the light mode is selected, everything in the `body` will have `text-gray-900` font colour and `bg-gray-50` background colour, while in dark mode elements will have `text-gray-100` font colour and `bg-gray-900` background. This provides a dark background with an off-white text.
+
+The `dark:` class prefix can be added throughout your application, as we’ve already configured Tailwind to look for this class in the `tailwind.config.js` file in steps 1 and 2.
+
+## Conclusion
+
+Pretty nifty right?! Tailwind CSS and next-themes make it really easy to implement a dark mode in your Next.js website or app. The trickiest part is writing the logic to detect the system theme or currently selected theme, as well as toggle between those themes with a button.
+
+To check out all of this functionality in action, simply scroll to the top of this page and toggle the mode icon!
