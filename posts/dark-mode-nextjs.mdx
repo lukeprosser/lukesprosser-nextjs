@@ -88,6 +88,10 @@ module.exports = {
 
 With this configured, whenever the `dark` class is present in the HTML tree, Tailwind will apply the dark styles, otherwise it will default to the light styles.
 
+<InfoText>
+  Behind the scenes, the `dark` class gets applied to the `<html>` tag when the dark mode toggle button is clicked. This ensures that the class can be referenced throughout the DOM tree. For more information on how this works, check out <a href="https://tailwindcss.com/docs/dark-mode" target="_blank">Tailwind's official documentation</a>.
+</InfoText>
+
 ## 3. Import the button icons
 
 For the dark and light button icons I used Tailwind’s very own <a href="https://heroicons.com/" target="_blank">Heroicons</a>, which is a collection of awesome SVG icons that can be installed as an NPM package.

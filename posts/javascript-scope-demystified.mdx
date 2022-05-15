@@ -1,0 +1,277 @@
+---
+title: 'JavaScript Scope Demystified'
+date: '2022-05-15'
+author: 'Luke Prosser'
+cover_image: 'javascript-scope.jpg'
+image_alt: 'Picture of Russian dolls lined up'
+tags: ['javascript']
+excerpt: "Scope is a core programming concept that can really trip you up when you’re first trying to learn JavaScript. Let's take a look at how it works, step by step."
+draft: false
+---
+
+Scope is a core programming concept that can really trip you up when you’re trying to learn JavaScript if you don’t fully understand how it works. If you’re encountering `undefined` values and uncaught reference errors, it’s likely you haven’t figured scope out just yet.
+
+But that’s ok! Scope can be tricky to wrap your head around at first. In this guide I’ll discuss why scope is important as well as summarise the three main types, including:
+
+- [What scope is](#what-exactly-is-scope)
+- [Why it exists](#what-are-the-benefits)
+- [Global Scope](#global-scope)
+- [Block Scope](#block-scope)
+- [Function Scope](#function-scope)
+- [Lexical Scope](#lexical-scope)
+
+## What exactly is scope?
+
+In our code we can declare variables in various locations. Scope determines the _accessibility_ of variables depending on where they are declared, as well as _how long they last_ in memory.
+
+Before ES6, JavaScript had two main types of scope: Global Scope and Function Scope (commonly referred to as Local Scope). ES6 introduced Block Scope with the addition of the `let` and `const` keywords.
+
+We’ll explore each of these in this guide.
+
+## What are the benefits?
+
+Scope is important for a number of reasons, including:
+
+- __Namespaces__ - Limiting the use of variables to specific scopes greatly reduces the chance of naming collisions i.e. when two variables have the same name.
+- __Privacy and security__ - It’s often important that certain variables and methods should only be accessible as and when needed, rather than exposed globally (when creating API endpoints, for example).
+- __Scalability__ - As codebases develop and grow, they can easily become polluted with variable naming clashes and memory issues. Limiting the scope of variables and functions makes code more reusable and reduces the risk of unexpected events.
+
+When implemented correctly, scope greatly improves the quality and performance of code.
+
+## Global Scope
+
+When you write JavaScript code without declaring any functions or blocks, you’re in the Global Scope. This means that any variables or functions that you declare in the Global Scope are accessible _globally_ (hence the name!). In other words, they can be referenced from anywhere in the program.
+
+It’s also important to note that variables declared globally are available to be referenced for the _entire lifetime_ of the application, and are only deleted (or garbage collected) when the program ends (by closing the browser window, for example).
+
+With the features of Global Scope outlined above, you may be wondering why we’d ever _not_ declare variables globally as it sounds so practical! However it is generally considered to be bad practice to declare variables in the Global Scope, and it should be avoided where possible unless you have a very specific reason for doing so.
+
+<InfoText>
+  Declaring variables in the Global Scope for use throughout a program could create namespace collision issues and potentially lead to unintended behaviour and side effects, such as functions and their return values being impacted accidentally.
+</InfoText>
+
+In the code below, the variable `name` is declared globally at the top of the program:
+
+```jsx
+var name = 'mario';
+// Any code here can use the name variable
+console.log(name); // 'mario'
+
+function someFunction() {
+  // Any code here can also use name
+  console.log(name); // 'mario'
+}
+```
+
+As you can see from the comments, the global variable `name` can be referenced from anywhere, including within any functions.
+
+JavaScript’s variable keywords `var`, `let` and `const` all behave similarly when used in the Global Scope.
+
+## Block Scope
+
+Blocks of code are defined using curly braces `{}`. The following block has its own scope:
+
+```jsx
+{
+  // Some code here
+}
+```
+
+This also includes all of the other block scopes, such as `if` statements, `for` loops, `while` loops, `try` statements, `catch` statements, and so on.
+
+We can’t talk about Block Scope without discussing the `var`, `let` and `const` keywords. `let` and `const` were introduced to the JavaScript language in 2015 and, without them, Block Scope would not be possible.
+
+### var
+
+If a variable is declared with `var` inside a block (i.e. a set of curly braces), it can still be referenced outside of the block. In other words, Block Scope as _no affect_ on the `var` keyword.
+
+In the following example we declare a variable `name` using the `var` keyword inside a block:
+
+```jsx
+{
+  var name = 'mario';
+}
+// The name variable can be referenced here
+console.log(name); // 'mario'
+```
+
+As you can see from the comment, `name` can be accessed from outside of the block.
+
+### let and const
+
+In contrast, variables declared with `let` and `const` are _scoped to the block_, meaning that they cannot be referenced outside of the block.
+
+Using `let` or `const`, variables are not accessible outside of the block:
+
+```jsx
+{
+  let name = 'mario';
+  const location = 'mushroom kingdom';
+}
+// Neither name or location can be accessed here
+console.log(name); // Uncaught ReferenceError: name is not defined
+console.log(location); // Uncaught ReferenceError: location is not defined
+```
+
+In this way, `let` and `const` are __block scoped__. To further illustrate this we can look at what happens when we have two variables with the same name:
+
+```jsx
+let name = 'mario';
+
+{
+  let name = 'luigi';
+  console.log(name); // 'luigi'
+}
+
+console.log(name); // 'mario'
+```
+
+While it may appear as though we have a single variable `name`, we in fact have _two different variables_ called `name`. The first has Global Scope with a value of `'mario'` and the second has Block Scope with a value of `'luigi'`. The second, block-scoped variable, can only be used within the block in which it is declared.
+
+### Variable resolution
+
+It’s also important to understand the ‘flow’ of variable resolution. When a variable is referenced, JavaScript will search from the inner-most scope _outwards_ until it finds it. If it can’t find the variable in the current scope, it will move to the next scope and so on, all the way up to the Global Scope.
+
+In this example we try to reference the variable `location` from within a block:
+
+```jsx
+const location = 'mushroom kingdom';
+
+{
+  console.log(location); // 'mushroom kingdom'
+}
+```
+
+However, the variable isn’t declared inside the block in which it’s referenced, so JavaScript looks outwards to the next available scope. In this particular case, `location` is declared in the Global Scope.
+
+## Function Scope
+
+Variables declared within a function are scoped _to that function_, meaning that they can only be referenced within that scope and cannot be referenced outside of it.
+
+In the following example we declare a function `someFunction()` and declare a variable `name` inside it:
+
+```jsx
+// The variable name is not visible outside of the function
+console.log(name); // Uncaught ReferenceError: name is not defined
+
+function someFunction() {
+  let name = 'mario';
+  // The variable name is accessible within the function
+  console.log(name); // 'mario'
+}
+
+// name can't be accessed here either
+console.log(name); // Uncaught ReferenceError: name is not defined
+```
+
+The variable `name` has Function Scope. We can reference it within the scope of `someFunction()`, but the code outside of this block has no visibility of `name`.
+
+If you declare a variable inside a function, and then attempt to reference it _outside_ the function, you’ll get an uncaught reference error. This is because the variable is `undefined` outside of the scope in which it was declared.
+
+### var, let and const in Function Scope
+
+The rules of Function Scope apply for variables declared with any of the keywords `var`, `let` or `const`. In other words, the behaviour of variables declared with these keywords is _the same_ when it comes to Function Scope.
+
+In the following example, we declare a variable `name` with the `var` keyword in the Global Scope, as well as another variable `location` - also with the `var` keyword - with Function Scope:
+
+```jsx
+var name = 'mario';
+console.log(name); // 'mario'
+
+function someFunction() {
+  var location = 'mushroom kingdom';
+  console.log(location); // 'mushroom kingdom'
+  console.log(name); // 'mario'
+}
+
+console.log(name); // 'mario'
+console.log(location); // Uncaught ReferenceError: location is not defined
+```
+
+Notice that `name` can be accessed from within the function because it is global, while `location` can only be accessed _inside_ the scope of the function where it was declared.
+
+### Duplicate variable names
+
+If you have a variable declared outside a function with the same name as a variable declared inside a function, as far as JavaScript is concerned they are two separate variables:
+
+```jsx
+function someFunction() {
+  var name = 'mario';
+  console.log(name); // 'mario'
+}
+
+function anotherFunction() {
+  var name = 'luigi';
+  console.log(name); // 'luigi'
+}
+```
+
+This means that there is no risk of namespace collisions within functions, and they are therefore used to take advantage of this to prevent any unexpected side effects in a program.
+
+### Local Scope
+
+Functions are said to create Local Scope. Variables declared within a function are _locally scoped_ to that function. In this way, Function Scope is actually a form of Block Scope, as variables are only visible within the block in which they’ve been declared.
+
+The use of these terms can seem confusing at first, but it’s simply due to how the language has evolved over time.
+
+### Variable lifetime
+
+Previously we saw that variables declared in the Global Scope exist for the entire lifetime of the application. In contrast, variables declared inside a function are _created when the function starts_, and are _deleted from memory when the function ends_.
+
+This is an important concept to understand and one that provides further advantages. Declaring variables in the Global Scope takes up memory throughout the lifetime of a program, while locally scoped variables (variables created in functions) only use memory when the function is executed.
+
+## Lexical Scope
+
+Lexical Scope (also known as Static Scope) relates to nested functions. More specifically, Lexical Scope enables inner (nested) functions to access the scope of outer (parent) functions.
+
+An inner function has access to any variables declared within the outer (parent) function, however variables inside the inner function are not accessible outside it. In other words, it’s a one-way relationship.
+
+The easiest way to understand this concept is to take a look at an example. Below, `someFunction()` is declared in the Global Scope, while `anotherFunction()` is declared inside the scope created by `someFunction()`:
+
+```jsx
+// Global Scope
+const name = 'mario';
+
+function someFunction() {
+  // Scope of someFunction
+  const location = 'mushroom kingdom';
+
+  function anotherFunction() {
+    // Scope of anotherFunction
+    console.log(location); // 'mushroom kingdom'
+    console.log(name); // 'mario'
+  }
+}
+```
+
+Each scope essentially cascades down, so `anotherFunction()` has access to the variables declared in `someFunction()` as well as the Global Scope.
+
+Again, it’s a one-way relationship. If we declare a variable inside the scope of `anotherFunction()` and attempt to reference it from the scope of `someFunction()` or the Global Scope, the variable will be `undefined`.
+
+When the code is executed JavaScript will look for the nearest definition of the variable, moving from innermost to outermost scopes.
+
+### Function closures
+
+Lexical Scope begins to touch on another topic: function closures in JavaScript. Closure is another important concept of the language to understand, so we’ll tackle this in another article.
+
+## Conclusion
+
+As you can see, Scope is an integral part of the JavaScript language and it’s essential that we understand it properly. We learned a number of key concepts - to recap:
+
+- Scope determines the _accessibility_ of variables depending on where they are declared.
+- Scope also dictates _how long variables last_ in memory:
+  - Variables declared globally last for the lifetime of the program.
+  - Local variables declared in functions are created when the function runs and deleted when it ends.
+- Scope has a number of benefits, including:
+  - The prevention of namespace collisions.
+  - Improving security with private variables and methods.
+  - Increasing code scalability by reducing potential side effects.
+- There are 3 main types of Scope, including:
+  - Global Scope
+  - Block Scope
+  - Function Scope (also known as Local Scope)
+- `let` and `const` are block-scoped i.e. they cannot be accessed outside of the block in which they are declared.
+- `var` is not block-scoped and _can_ be accessed outside of the block where it is created.
+- When a variable is referenced, JavaScript will search from the inner-most scope _outwards_ until it finds it.
+
+While scope may seem overwhelming at first, don’t worry! It’s something you simply get used to over time. Trust me, after writing many variables and functions, it becomes second nature eventually.
