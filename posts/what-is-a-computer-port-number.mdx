@@ -1,0 +1,120 @@
+---
+title: 'What Is A Computer Port Number?'
+date: '2022-05-20'
+author: 'Luke Prosser'
+cover_image: 'computer-port.jpg'
+image_alt: 'Picture of shipping containers'
+tags: ['web']
+excerpt: 'Computer ports are pretty important when it comes to sending and receiving data, but what exactly are they, and how do they work? In this guide we’ll take a look underneath the hood of computer ports and networks.'
+draft: false
+---
+
+Have you ever spun up a local server or set up an email account and wondered what that weird ‘port’ number is, why are there so many of them, or what they actually do? I know I have, so I decided to find out.
+
+Computer ports are pretty important...well...essential when it comes to sending and receiving data, but what exactly are they, and how do they work?
+
+In this guide we’ll take a look underneath the hood of computer ports and networks. By the end, you’ll be able to explain:
+
+- [What a computer port is](#what-is-a-computer-port)
+- [What a port number is](#why-do-ports-have-numbers)
+- [Why computer ports are used](#why-do-we-use-ports)
+- [How ports are used in networking](#where-do-ports-fit-in)
+- [Why firewalls exist and how they work](#ports-and-security)
+- [Common port numbers and their usage](#common-port-numbers)
+
+## What is a computer port?
+
+So what exactly _is_ a port? In short, it’s essentially a _virtual_ connection point where all kinds of network connections begin and end. Just like a shipping port has many boats and ships moving in and out with various goods, a computer port receives many network connections sending and receiving data.
+
+To avoid confusion it’s important to point out that, in this context, we’re not referring to the _physical_ ports on your computer. The computer ports referred to in this article are _created in software_ and managed by the computer’s operating system.
+
+So what’s with all the different port numbers? Each created port is assigned a specific role, which helps computers to distinguish between all of the different types of network traffic that move to and from the device. For example, even though webpages and emails reach a computer over the same internet connection, they travel through different pre-assigned virtual ports.
+
+## Why do ports have numbers?
+
+These pre-assigned virtual ports are part of a standard used by all network-connected devices, meaning they can be given specific numbers. You may have come across port 80, which is allocated exclusively to HTTP messages.
+
+It’s interesting to note that, in an attempt to future-proof networking requirements, there are over 65,000 ports! That’s a lot, and not all of them are in use, but many are available for developers to use as they see fit.
+
+In another article I outlined how <Link href="/posts/domain-names-and-dns"><a>IP addresses</a></Link> act like postal addresses for individual devices. Port numbers provide the next part in the chain, in that they enable access to specific services or applications on those devices.
+
+Your mobile phone, for example, has a unique IP address. Your phone’s email client will send and receive data from your email service provider via the phone’s assigned email port. As an aside, this will be port 25, which is specifically allocated to deal with SMTP (more on this later).
+
+## Why do we use ports?
+
+Ok, so we know that computer ports are virtual connection points inside our devices, and that there are over 65,000 different ports. But why? What’s the point?
+
+Well, imagine for a moment that your computer is a busy corporate office building. Every day the building receives a metric tonne of mail to its reception. Now imagine that the building has hundreds of employees and no way to organise all of this incoming post, it’s quite literally thrown into an enormous pile in the reception area.
+
+Employees are forced to root through this pile in the hope of finding their specific type of mail and process it accordingly. As I’m sure you can agree, that would be utter chaos.
+
+Similar to an office building, computers are required to deal with many, many different kinds of data through the same front doors i.e. the same network connection. In order to process all of this data, it’s filtered through different ports so that the computer knows what to do with it on arrival.
+
+You can think of ports as the reception desk of the computer. All of the mail arrives at the desk and is filtered into trays or boxes for specific departments, and that filtered mail can then be delivered to the room or person to which it is addressed. Much more efficient!
+
+What’s amazing about computers is that they can essentially process all of these different requests simultaneously. Consider how you use your own computer, and how many requests are being sent back and forth to allow you to browse the web, listen to music, send and receive emails, and so on. 
+
+A computer can load HTTP webpages using port 80, send emails over port 25, and many other tasks, all seemingly at the same time over the same WiFi connection.
+
+## Where do ports 'fit in'?
+
+Now that we’ve covered what computer ports are and why they’re useful, it’s also important to understand where they sit within the wider internet infrastructure.
+
+With all of the different devices, as well as the different types of data to be sent and received by those devices over the internet, it helps to have some kind of overarching standard to govern how all of this should work.
+
+The _International Standard for Organization_ (ISO) created the _Open Systems Interconnection_ (OSI) _model_ as a way to conceptualise how different computer systems communicate with one another over the internet.
+
+This model divides the various processes and services that make up the internet into seven ‘layers’. These layers stack one on top of the other, from the machine level all the way up to the application level where users interact.
+
+<InfoText>
+  The internet has evolved over time and doesn’t entirely adhere to the OSI model, but it’s still useful as a conceptual model to illustrate and understand the infrastructure. For more information on how the internet works, <Link href="/posts/what-is-http"><a>check out this guide</a></Link>.
+</InfoText>
+
+Here’s a very brief overview of the layers:
+
+- __7: Application Layer__ - Directly interacts with data from the user. Applications like browsers and email clients use protocols in the Application Layer like HTTP and SMTP to communicate.
+- __6: Presentation Layer__ - Prepares data for use by the Application Layer. Responsible for translation, encryption and compression of data.
+- __5: Session Layer__ - A session refers to when a communication is opened and closed. The Session Layer maintains connections between devices and determines when sessions should start and end, including controlling ports.
+- __4: Transport Layer__ - Handles end-to-end communication between two devices by breaking session data into chunks called segments. Transmits data using transmission protocols including TCP and UDP.
+- __3: Network Layer__ - Handles data transfer between two networks, deciding which physical path the data should take.
+- __2: Datalink Layer__ - Similar to the network layer but determines data transfer between two devices on the _same_ network. Defines the format of data on the network by taking packets of data from the network layer and breaking them into smaller pieces called frames.
+- __1: Physical Layer__ - Covers the physical equipment used in the transfer of data including cables and switches. Data is converted into a raw bitstream (a string of 0s and 1s) that machines can understand.
+
+Computer ports are part of the Transport Layer. Transport protocols like TCP indicate which port a data packet should be routed to using headers.
+
+## Ports and security
+
+With over 65,000 ports available, bad actors may attempt to exploit unused or unmonitored ports, which presents numerous security risks to IT systems and networks. Attackers will try to send malicious data to random ports on the network with the aim of finding one that’s been left open.
+
+To combat this, companies introduce _firewall_ security systems to block or allow network traffic across specified ports based on a set of security rules.
+
+Firewalls act as a barrier between trusted networks, like a company intranet, and an untrusted network, which is almost always the internet. They’re set up to block traffic from most of the available ports, while leaving required ports open.
+
+As you can imagine, however, there is a balance to strike between which ports to block and which ones to leave open. Employees at a business will likely need to access the internet using HTTPS via port 443 in order to browse websites, as well as send and receive email on port 25.
+
+It simply wouldn’t be practical to block these ports, so there is always a trade-off between the needs of an organisation and the inherent security risks.
+
+## Common port numbers
+
+In total there are currently 65,535 port numbers. As mentioned, many are assigned a specific purpose, while many others are free to be used for custom purposes.
+
+The full list of port numbers and their associated protocols is maintained by the (brilliantly named) _<a href="https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml" target="_blank">Internet Assigned Numbers Authority</a>_ (IANA).
+
+For reference, here’s a list of the ports that you’re most likely to encounter, together with their protocol usage:
+
+- __20 and 21: File Transfer Protocol (FTP)__ - Transferring files between client and server.
+- __22: Secure Shell (SSH)__ - A tunnelling protocol for secure network connections.
+- __25: Simple Mail Transfer Protocol (SMTP)__ - Used to send and receive email.
+- __53: Domain Name System (DNS)__ - Matches human-readable domain names with machine-readable IP addresses.
+- __80: Hypertext Transfer Protocol (HTTP)__ - The foundation of the web.
+- __443: HTTP Secure (HTTPS)__ - Secure and encrypted version of HTTP.
+- __500: Internet Security Association and Key Management Protocol (ISAKMP)__ - Used for setting up secure IPsec connections such as VPNs.
+- __3389: Remote Desktop Protocol (RDP)__ - RDP allows users to remotely connect to their computers from another device.
+
+## Conclusion
+
+In summary, computer ports are standardised virtual connection points that enable devices to communicate with one another across a network.
+
+There are over 65,000 ports and many of them are pre-assigned to handle a specific type of communication protocol and its associated data.
+
+This makes it much more efficient for computers to process different requests and move data to the correct location as quickly as possible.
