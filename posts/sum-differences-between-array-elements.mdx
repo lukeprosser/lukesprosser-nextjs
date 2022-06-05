@@ -1,0 +1,171 @@
+---
+title: 'Sum The Differences Between Array Elements'
+date: '2022-06-03'
+author: 'Luke Prosser'
+cover_image: 'sum-differences-between-array-elements.png'
+image_alt: 'Sum The Differences Between Array Elements'
+tags: ['javascript']
+excerpt: 'In this post we’re going to take on a coding challenge where the objective is to create a function that accepts an array of integers and sums the difference between the consecutive pairs in the array.'
+draft: false
+---
+
+It’s always a good idea to continue to ‘sharpen the axe’ and keep your JavaScript algorithmic muscles in shape.
+
+In this post we’re going to take on a coding challenge where the objective is to create a function that accepts an array of integers and sums the difference between the consecutive pairs in the array.
+
+## The rules
+
+Here are the rules:
+
+- The differences should be calculated in _descending_ order.
+- If a given array is _empty_, or the array has only a _single element_, the sum result should be `0`.
+- The solution should also account for negative integers in an array e.g. `[-4, 2, -6]`.
+
+## The logic
+
+Let’s first break this down with an example. When the function takes in the following array:
+
+```javascript
+[2, 1, 10];
+```
+
+It should output `9`. Why? The calculation should be performed in descending order, so the array should be sorted as follows:
+
+```javascript
+[10, 2, 1];
+```
+
+The differences between the consecutive pairs would then be calculated like so:
+
+```javascript
+(10 - 2) + (2 - 1) = 8 + 1 = 9
+```
+
+## A possible solution
+
+At this point, feel free to attempt to solve this problem on your own, then come back to compare your solution.
+
+There are essentially three steps to solving this problem:
+
+1. Sort the given array in descending order.
+2. Loop through the array and calculate the difference between each pair of elements.
+3. Sum all of the differences.
+
+### Sort the array
+
+First, let’s declare a function `sumDifferences` (or whatever you’d like to call it) that takes in an array of integers:
+
+```javascript
+function sumDifferences(arr) {}
+```
+
+The first task is to sort the array. We can use JavaScript’s `sort()` method to achieve this:
+
+```javascript
+function sumDifferences(arr) {
+  // Sort array in descending order
+  const sortedArr = arr.sort((a, b) => b - a);
+}
+```
+
+Above I call `sort()` on the given array and use `b - a` to sort the values in descending order and store them in a new array called `sortedArr`.
+
+<InfoText>
+  For ascending order, you can use `a - b`. For more information on how `sort()` works, take a look at the <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort' target='_blank'>MDN documentation</a>.
+</InfoText>
+
+### Loop through the elements
+
+Now we need to loop through this sorted array and figure out the differences between each consecutive pair of elements. We also need to keep a track of the differences, so let’s set that up too:
+
+```javascript
+function sumDifferences(arr) {
+  // Sort array in descending order
+  const sortedArr = arr.sort((a, b) => b - a);
+  // Initialise difference tracker
+  let sum = 0;
+  // Loop through sorted array
+  for (let i = 0; i < sortedArr.length - 1; i++) {}
+}
+```
+
+We initialise a variable `sum` to `0` - we’ll add each of the differences to this sum as we go and the function will ultimately return it at the end.
+
+Here I’m using a `for` loop to iterate through the sorted array items. Notice that I specify the total number of iterations using `sortedArr.length - 1` - more on this shortly.
+
+### Calculate the differences
+
+Let’s picture the first iteration. Given the array `[10, 2, 1]` , the first element (element `0`) will be `10` and the second element (element `1`) will be `2`. We want to take `2` away from `10` to result in `8`, so we can calculate the different between these as follows:
+
+```javascript
+sortedArr[i] - sortedArr[i + 1];
+```
+
+However, what happens when we reach the last element in the array (in this case `1`)? There won’t be any more elements to compare with. This is why I set the total number of iterations to be one element _less than_ the total length of the array with `sortedArr.length - 1`. In other words, the loop will end at the penultimate element (in this case `2`, comparing `2` with `1`).
+
+### Sum the differences
+
+Now we just need to take the result (`8`) and add it to the sum. We can use the shorthand syntax `+=`:
+
+```javascript
+sum += sortedArr[i] - sortedArr[i + 1];
+```
+
+Finally, the function simply needs to return the sum - remember to do this outside of the loop:
+
+```javascript
+function sumDifferences(arr) {
+  // Sort array in descending order
+  const sortedArr = arr.sort((a, b) => b - a);
+  // Initialise difference tracker
+  let sum = 0;
+  // Loop through sorted array
+  for (let i = 0; i < sortedArr.length - 1; i++) {
+    // Calculate difference between consecutive pairs
+    sum += sortedArr[i] - sortedArr[i + 1];
+  }
+  // Return total
+  return sum;
+}
+```
+
+It’s important to note that this solution also works for negative integers.
+
+## Alternative solutions
+
+As with anything in programming, there are many different ways to solve the same problem. Some solutions are more efficient but less readable, and some are more verbose but less scalable.
+
+For example, the following solution elegantly chains together three different higher-order array functions - `sort`, `map` and `reduce` - to generate a single result:
+
+```javascript
+const sumDifferences = (arr) =>
+  arr
+    .sort((a, b) => b - a)
+    .map((el, idx) => el - arr[idx + 1] || 0)
+    .reduce((a, b) => a + b, 0);
+```
+
+`sort` is used in the same way, bubbling items up and down in descending order. `map` also works in a similar way by subtracting the consecutive element (accessed with `arr[idx + 1]`) from the current element. If the consecutive element doesn’t exist (i.e. we’ve hit the end of the array) it returns `0` instead. Finally, `reduce` iterates through the array of differences and adds them all together.
+
+This next solution takes things even further:
+
+```javascript
+function sumDifferences(arr) {
+  return arr.length > 1 ? Math.max(...arr) - Math.min(...arr) : 0;
+}
+```
+
+Rather than sorting the array items and looping through them, it uses `Math.max()` and `Math.min()` to calculate the highest and lowest integers in the array respectively. Then it simply takes the lowest number from the highest number to give the overall difference. Finally, this logic is wrapped in a ternary check where it only executes if there is more than one element in the array, otherwise it returns `0`.
+
+This can be refactored even further into a single line using arrow function syntax:
+
+```javascript
+const sumDifferences = (arr) =>
+  arr.length <= 1 ? 0 : Math.max(...arr) - Math.min(...arr);
+```
+
+## Conclusion
+
+There we have it: multiple ways to sum the differences between consecutive array items.
+
+How did you do? Did you come up with a different solution? Let me know on <a href='https://twitter.com/lukesprosser' target='_blank'>Twitter</a>.
