@@ -1,0 +1,243 @@
+---
+title: 'JavaScript Modules Explained'
+date: '2022-06-12'
+author: 'Luke Prosser'
+cover_image: 'javascript-modules.png'
+image_alt: 'JavaScript Modules Explained'
+tags: ['javascript']
+excerpt: "If you’ve worked with Node.js or React for any amount of time, you will have come across JavaScript modules. You may also have noticed that there are different ways to create modular code depending on the age or requirements of your codebase. In this article we'll learn what they are and how they work."
+draft: false
+---
+
+If you’ve worked with Node.js or React for any amount of time, you will have come across JavaScript modules. You may also have noticed that there are different ways to create modular code depending on the age or requirements of your codebase.
+
+There are broadly two types of module support in JavaScript:
+
+- **CommonJS** - Used by NodeJS (uses the `require` function and `module.exports`)
+- **ES Modules** - Introduced for the client-side as part of ES6 (uses the `import` and `export` keywords)
+
+## Advantages
+
+So what’s all the fuss about? What’s the point of modules? Well, there a number of key advantages:
+
+- **Efficiency** - Code can be broken up into smaller files for self-contained features and functionality. Browsers can then optimise the loading of modules, only loading in the code that’s needed at any one time.
+- **Scalability** - The same modules can be reused elsewhere across multiple applications.
+- **Reliability** - Separating code into modules helps to avoid naming conflicts using separate namespaces.
+
+Utilising modules in our code is much more efficient than having to use a library and doing extra client-side processing with additional round-trips.
+
+## Access to modules
+
+When exporting and importing modules you need to be aware of your project’s directory structure. When importing modules you need to specify the relative path from the current file. If you’re importing a remote script you’ll need to specify the absolute path.
+
+## CommonJS
+
+CommonJS was one of the first module systems to be created and is most widely used in Node.js. The NPM (Node Package Manager) ecosystem is built upon the CommonJS format.
+
+While it is more commonly used on the server-side it can also be used in the browser, but must be packaged with a transpiler as it is not natively supported. This is why ES Modules were introduced for the client-side.
+
+### Exporting CommonJS modules
+
+A JavaScript file becomes a module when it exports one or more symbols, which could be variables, functions, objects, arrays, and so on:
+
+```jsx
+// uppercase.js
+
+exports.uppercase = (str) => str.toUpperCase();
+```
+
+You can export more than one value from a module:
+
+```jsx
+// multiple-values.js
+
+exports.a = 1;
+exports.b = 2;
+exports.c = 3;
+```
+
+Alternatively you can export a single value from a file using `module.exports`:
+
+```jsx
+// single-value.js
+
+const value = {
+  a: 1,
+  b: 2,
+  c: 3,
+};
+
+module.exports = value;
+```
+
+### Importing CommonJS modules
+
+The `require()` function is used to import a module:
+
+```jsx
+const somePackage = require('module-name');
+```
+
+It’s worth noting that modules are loaded _synchronously_ and processed in the order in which the JavaScript runtime finds them.
+
+We could import the `uppercase()` method above by requiring the module file that exported it:
+
+```jsx
+const uppercaseModule = require('uppercase.js');
+
+uppercaseModule.uppercase('test');
+```
+
+Notice how the import is assigned to a variable `uppercaseModule` and the method can then be called using dot notation.
+
+<InfoText>
+  Note that the `require` method needs to be provided with the _relative path_
+  to the file in question. For example, if the file you wish to import is in the
+  same directory as the file you’re importing into, you can access it using
+  `./`.
+</InfoText>
+
+We can import individual values using destructuring assignment:
+
+```jsx
+const { a, b, c } = require('./multiple-values.js');
+```
+
+To import a single value that was exported using `module.exports`, we can simply require the file:
+
+```jsx
+const value = require('./single-value.js');
+```
+
+## ES Modules
+
+If you’ve used JavaScript libraries like React, or frameworks like Angular, you will already have experience working with ES Modules.
+
+ES Modules were introduced in ES2015 and provide built-in support for modules in JavaScript with the `export` and `import` keywords.
+
+### Exporting ES Modules
+
+We can export individual variables, functions and classes by placing the `export` keyword in front:
+
+```jsx
+export const name = 'mario';
+
+export function toUpperCase(str) {
+  return str.toUpperCase();
+}
+```
+
+Any items that need to be exported must be declared as top-level items, so you can’t use `export` from inside a function, for example.
+
+Alternatively you can export any items in the file in a single statement at the end:
+
+```jsx
+export { name, toUpperCase };
+```
+
+### Importing ES Modules
+
+Once features have been exported, they can then be imported elsewhere for use.
+
+The easiest way to do this is to use a single `import` statement, declaring the features to be imported and the file they’re to be imported from (using the `from` keyword):
+
+```jsx
+import { name, toUpperCase } from './modules/helpers.js';
+```
+
+Once the features have been imported they can be used just like any other variable or function in the file:
+
+```jsx
+const nameUpper = toUpperCase(name);
+console.log(nameUpper); // MARIO
+```
+
+We could instead import everything with a shorthand syntax using the `*` character:
+
+```jsx
+import * from './modules/helpers.js';
+```
+
+Alternatively you could import just one of the items like so:
+
+```jsx
+import { toUpperCase } from './modules/helpers.js';
+```
+
+### Default vs named exports
+
+The examples above use _named exports_, where each item has been referred to by its individual name when exported (e.g. the variable `name`, the function `toUpperCase()`).
+
+In addition to named exports, there is also a type of export called the _default export_. We could instead export the `toUpperCase()` function as the default export:
+
+```jsx
+export default function (str) {
+  return str.toUpperCase();
+}
+```
+
+Notice that there is no need for curly braces, and that we can also define the function as an anonymous function.
+
+Then, in the main script we can import it as follows:
+
+```jsx
+import upperCase from './modules/helpers.js';
+```
+
+Notice that, again, there are no curly braces, as we know that the uppercase function is the default and only export.
+
+### Renaming imports
+
+There may be occasions where you need to avoid naming conflicts with similar functions in other modules.
+
+We can use the `as` keyword to achieve this:
+
+```jsx
+import { name as firstName } from './modules/helpers.js';
+```
+
+In this example we can then reference the `name` variable using `firstName`.
+
+### Creating a module object
+
+Alternatively, rather than importing multiple items individually or resorting to renaming, we can import using a module object:
+
+```jsx
+import * as SomeModule from './modules/someModule.js';
+```
+
+This creates a separate namespace and allows us to access all of the exports from the file e.g.:
+
+```jsx
+SomeModule.someFunction1();
+SomeModule.someFunction2();
+```
+
+This can be helpful for scalability.
+
+### Importing default and named exports
+
+We can also import both default and named exports from a single file simultaneously. You’ll often see this technique in React code, for example:
+
+```jsx
+import React, { Component } from 'react';
+```
+
+Here, React is imported from a default export, while Component is imported from a named export.
+
+### Applying modules to HTML
+
+To utilise an ES module on a site we need to apply it to an HTML page. This is similar to applying a standard JavaScript file, but we’ll need to declare a `type="module"` on the `<script>` element:
+
+```html
+<script type="module" src="some-module.js"></script>
+```
+
+## Things to note
+
+There are a few additional points to be aware of when using modules, some of which can cause unexpected behaviour if you’re unaware:
+
+- Modules use s*trict mode* by default - this is important to understand in case you see any unexpected error messages or type errors.
+- There is no need to use the `defer` attribute on a module script as modules are deferred automatically.
+- Module features are imported into the scope of a single script - they are not available in the global scope. You will only be able to access imported features within the script in which they are imported into, and you won't be able to access them from the JavaScript console, for example.
+- Modules are fetched using CORS. This means that if you reference scripts from other domains, they must have a valid CORS header that allows cross-site loading (like `Access-Control-Allow-Origin: *`).
